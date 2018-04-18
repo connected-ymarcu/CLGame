@@ -9,11 +9,22 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
+
+    // cat animation
+    let catAtlas = SKTextureAtlas(named:"player")
+    var catTextureArray = Array<SKTexture>()
+    var cat = SKSpriteNode()
+    var repeatActionCat = SKAction()
 
     let backgroundName = "background"
+
     func createScene(){
-      // create 2 background image side by side
+
+      // setup contacting with the edge and collisions
+      self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+
+      // setup background - create 2 background image side by side
       for i in 0..<2
       {
         let background = SKSpriteNode(imageNamed: "bg")
@@ -23,6 +34,27 @@ class GameScene: SKScene {
         background.size = (self.view?.bounds.size)!
         self.addChild(background)
       }
+
+      // setup cat animation
+      catTextureArray.append(catAtlas.textureNamed("bird1"))
+      catTextureArray.append(catAtlas.textureNamed("bird2"))
+      catTextureArray.append(catAtlas.textureNamed("bird3"))
+      catTextureArray.append(catAtlas.textureNamed("bird4"))
+
+      self.cat = createCat()
+      self.addChild(cat)
+
+      let animateCat = SKAction.animate(with: self.catTextureArray, timePerFrame: 0.1)
+      self.repeatActionCat = SKAction.repeatForever(animateCat)
+
+    }
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        self.cat.removeAllActions()
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.cat.run(repeatActionCat)
     }
 
     override func didMove(to view: SKView) {
