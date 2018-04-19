@@ -38,7 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       }
 
       // setup cat animation
-      catTextureArray.append(catAtlas.textureNamed("ball"))
+      catTextureArray.append(catAtlas.textureNamed("cat"))
 
       cat = createCat()
       self.addChild(cat)
