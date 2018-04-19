@@ -23,6 +23,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
       // setup contacting with the edge and collisions
       self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+      self.physicsWorld.contactDelegate = self
+      self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -1.62)  // Jupiter gravity -24.8, moon gravity is -1.62
 
       // setup background - create 2 background image side by side
       for i in 0..<2
@@ -36,25 +38,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       }
 
       // setup cat animation
-      catTextureArray.append(catAtlas.textureNamed("bird1"))
-      catTextureArray.append(catAtlas.textureNamed("bird2"))
-      catTextureArray.append(catAtlas.textureNamed("bird3"))
-      catTextureArray.append(catAtlas.textureNamed("bird4"))
+      catTextureArray.append(catAtlas.textureNamed("ball"))
 
-      self.cat = createCat()
+      cat = createCat()
       self.addChild(cat)
 
-      let animateCat = SKAction.animate(with: self.catTextureArray, timePerFrame: 0.1)
-      self.repeatActionCat = SKAction.repeatForever(animateCat)
+      let animateCat = SKAction.animate(with: catTextureArray, timePerFrame: 0.1)
+      repeatActionCat = SKAction.repeatForever(animateCat)
 
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
-        self.cat.removeAllActions()
+        cat.removeAllActions()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.cat.run(repeatActionCat)
+      cat.physicsBody?.affectedByGravity = true
+      cat.run(repeatActionCat)
+
+      cat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+      cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 500))
     }
 
     override func didMove(to view: SKView) {
