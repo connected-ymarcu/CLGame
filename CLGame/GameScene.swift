@@ -48,7 +48,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
       // setup cat animation
       cat = createCat()
-      catTextureArray.append(catAtlas.textureNamed("cat"))
+      catTextureArray.append(catAtlas.textureNamed("Cat1"))
+      catTextureArray.append(catAtlas.textureNamed("Cat2"))
+      catTextureArray.append(catAtlas.textureNamed("Cat3"))
+      catTextureArray.append(catAtlas.textureNamed("Cat4"))
+
       self.addChild(cat)
       let animateCat = SKAction.animate(with: catTextureArray, timePerFrame: 0.1)
       repeatActionCat = SKAction.repeatForever(animateCat)

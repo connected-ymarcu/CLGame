@@ -17,8 +17,8 @@ struct CollisionBitMask {
 extension GameScene {
   func createCat() -> SKSpriteNode {
     // size/position
-    let cat = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("cat"))
-    cat.size = CGSize(width: 100, height: 100)
+    let cat = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("Cat1"))
+    cat.setScale(0.15)
     cat.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
 
     // bounce/gravity
