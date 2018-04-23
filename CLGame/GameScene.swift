@@ -11,18 +11,26 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
 
-    // cat animation
+    // game loop
+    var restartBtn = SKSpriteNode()
+    var startedGame = false
+    var lostGame = false
+
+    // cat
+    var cat = SKSpriteNode()
     let catAtlas = SKTextureAtlas(named:"player")
     var catTextureArray = Array<SKTexture>()
-    var cat = SKSpriteNode()
     var repeatActionCat = SKAction()
 
     // obstacle - rocks
-    var rockParentNode = SKNode()
-    var moveAndRemoveRocks = SKAction()
+    var obsticle = SKSpriteNode()
 
     // scene
     let backgroundName = "background"
+
+    func currentlyPlaying () -> Bool {
+      return startedGame && !lostGame
+    }
 
     func createScene(){
 
@@ -32,6 +40,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         size: CGSize(width: self.frame.width, height: self.frame.height - 90)
       )
       self.physicsBody = SKPhysicsBody(edgeLoopFrom: edgeFrame)
+      self.physicsBody?.categoryBitMask = CollisionBitMask.moonCategory
+      self.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+      self.physicsBody?.contactTestBitMask = CollisionBitMask.catCategory
       self.physicsWorld.contactDelegate = self
       self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)  // Jupiter gravity -24.8, moon gravity is -1.62
 
@@ -58,23 +69,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       repeatActionCat = SKAction.repeatForever(animateCat)
     }
 
-    func addDeadlyObsticle() {
+    func spawnDeadlyObsticle () {
+      if currentlyPlaying() {
+        run(SKAction.repeatForever(
+          SKAction.sequence([
+            SKAction.run(obsticleAction),
+            SKAction.wait(forDuration: TimeInterval(3))
+            ])
+        ))
+      }
+    }
 
-      let obsticle = SKSpriteNode(imageNamed: "flag")
-
-      // randomize x and y position
-      let actualY =  random(min: obsticle.size.height/2, max: 185)
-      let actualX = random(min: size.width + obsticle.size.width/2, max: size.width*3 )
-      obsticle.position = CGPoint(x: actualX, y: actualY)
-
+    func obsticleAction() {
+      obsticle = createObsticle()
       addChild(obsticle)
 
       // Determine speed of the rock
-      let actualDuration = 8 //random(min: CGFloat(2.0), max: CGFloat(4.0))
+      let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
       let actionMove = SKAction.move(to: CGPoint(x: -obsticle.size.width/2, y: actualY), duration: TimeInterval(actualDuration))
       let actionRemove = SKAction.removeFromParent()
       obsticle.run(SKAction.sequence([actionMove, actionRemove]))
-
     }
 
     func random(min : CGFloat, max : CGFloat) -> CGFloat{
@@ -85,42 +99,76 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
     }
 
-    override func didMove(to view: SKView) {
-      createScene()
+    func endGame() {
+      lostGame = true
+      startedGame = false
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        self.removeAllActions()
+        self.displayRestartButton()
+      }
+    }
 
-      // spawn deadly things
-      run(SKAction.repeatForever(
-        SKAction.sequence([
-          SKAction.run(addDeadlyObsticle),
-          SKAction.wait(forDuration: TimeInterval(3))
-          ])
-      ))
+    func startGame() {
+      startedGame = true
+      lostGame = false
+
+      removeAllChildren()
+
+      createScene()
+      spawnDeadlyObsticle()
+    }
+
+    override func didMove(to view: SKView) {
+      startGame()
     }
 
     override func update(_ currentTime: TimeInterval) {
-      enumerateChildNodes(withName: backgroundName, using: ({
-        (node, error) in
-        let bg = node as! SKSpriteNode
-        bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
-        // once each image moves fully to the left so position.x is -414, set its position.x to 414
-        if bg.position.x <= -bg.size.width {
-          bg.position = CGPoint(x:bg.position.x + bg.size.width*2, y:bg.position.y)
-        }
-      }))
+      if currentlyPlaying() {
+        enumerateChildNodes(withName: backgroundName, using: ({
+          (node, error) in
+          let bg = node as! SKSpriteNode
+          bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
+          // once each image moves fully to the left so position.x is -414, set its position.x to 414
+          if bg.position.x <= -bg.size.width {
+            bg.position = CGPoint(x:bg.position.x + bg.size.width*2, y:bg.position.y)
+          }
+        }))
+      }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      // cat action
+      // repeat cat animation
       cat.physicsBody?.affectedByGravity = true
       cat.run(repeatActionCat)
       cat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
       cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 250))
+
+      // start game
+      if !currentlyPlaying() {
+        for touch in touches {
+          if restartBtn.contains(touch.location(in: self)){
+            startGame()
+          }
+        }
+      }
     }
 
     // MARK: - SKPhysicsContactDelegate
 
     func didBegin(_ contact: SKPhysicsContact) {
-      cat.removeAllActions()
+      // cat and obstacles touching
+      let catTouchesObstacle = contact.bodyA.categoryBitMask == CollisionBitMask.catCategory && contact.bodyB.categoryBitMask == CollisionBitMask.obstacleCategory
+      let obstacleTouchesCat = contact.bodyB.categoryBitMask == CollisionBitMask.catCategory && contact.bodyA.categoryBitMask == CollisionBitMask.obstacleCategory
+
+      if (catTouchesObstacle || obstacleTouchesCat) {
+        if currentlyPlaying() {
+          print("DEATH")
+          endGame()
+        }
+      } else {
+        print("Cat touched something other than the flag")
+        cat.removeAllActions()
+      }
     }
 
 }
