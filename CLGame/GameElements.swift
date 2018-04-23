@@ -72,4 +72,16 @@ extension GameScene {
 
     return obsticle
   }
+
+  func createScoreLabel() -> SKLabelNode {
+    let scoreLbl = SKLabelNode()
+    scoreLbl.text = "\(score)"
+    scoreLbl.zPosition = 5
+    scoreLbl.fontSize = 50
+    scoreLbl.fontName = "HelveticaNeue-Bold"
+    scoreLbl.position = CGPoint(x: (self.frame.width - scoreLbl.frame.size.width - 40) , y: self.frame.height / 2 + self.frame.height / 2.6)
+
+    return scoreLbl
+  }
+
 }

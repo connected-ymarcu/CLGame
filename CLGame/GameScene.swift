@@ -16,6 +16,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var startedGame = false
     var lostGame = false
 
+    // score
+    var score = Int(0)
+    var scoreLbl = SKLabelNode()
+
     // cat
     var cat = SKSpriteNode()
     let catAtlas = SKTextureAtlas(named:"player")
@@ -67,6 +71,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       self.addChild(cat)
       let animateCat = SKAction.animate(with: catTextureArray, timePerFrame: 0.1)
       repeatActionCat = SKAction.repeatForever(animateCat)
+
+      // score
+      scoreLbl = createScoreLabel()
+      self.addChild(scoreLbl)
     }
 
     func spawnDeadlyObsticle () {
@@ -111,6 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func startGame() {
       startedGame = true
       lostGame = false
+      score = 0
 
       removeAllChildren()
 
@@ -130,6 +139,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
           // once each image moves fully to the left so position.x is -414, set its position.x to 414
           if bg.position.x <= -bg.size.width {
+            self.score += 1
+            self.scoreLbl.text = String(self.score)
             bg.position = CGPoint(x:bg.position.x + bg.size.width*2, y:bg.position.y)
           }
         }))
