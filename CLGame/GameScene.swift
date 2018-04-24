@@ -63,10 +63,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
       // setup cat animation
       cat = createCat()
-      catTextureArray.append(catAtlas.textureNamed("Cat1"))
-      catTextureArray.append(catAtlas.textureNamed("Cat2"))
-      catTextureArray.append(catAtlas.textureNamed("Cat3"))
-      catTextureArray.append(catAtlas.textureNamed("Cat4"))
+      catTextureArray.append(catAtlas.textureNamed("cat1"))
+      catTextureArray.append(catAtlas.textureNamed("cat2"))
+      catTextureArray.append(catAtlas.textureNamed("cat3"))
+      catTextureArray.append(catAtlas.textureNamed("cat4"))
 
       self.addChild(cat)
       let animateCat = SKAction.animate(with: catTextureArray, timePerFrame: 0.1)
@@ -110,6 +110,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func endGame() {
       lostGame = true
       startedGame = false
+
+      // death cat graphic
+      catTextureArray.removeAll()
+      cat.removeAllActions()
+      cat.texture = SKTexture(imageNamed: "cat7.png")
+
       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
         self.removeAllActions()
         self.displayRestartButton()
@@ -120,6 +126,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       startedGame = true
       lostGame = false
       score = 0
+      catTextureArray.removeAll()
 
       removeAllChildren()
 
@@ -160,12 +167,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      // repeat cat animation
-      cat.physicsBody?.affectedByGravity = true
-      cat.run(repeatActionCat)
-      cat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-      cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 250))
-
       // start game
       if !currentlyPlaying() {
         for touch in touches {
@@ -173,6 +174,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             startGame()
           }
         }
+      } else {
+        // repeat cat animation
+        cat.physicsBody?.affectedByGravity = true
+        cat.run(repeatActionCat)
+        cat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+        cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 250))
       }
     }
 

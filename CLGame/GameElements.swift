@@ -40,7 +40,7 @@ extension GameScene {
 
   func createCat() -> SKSpriteNode {
     // size/position
-    let cat = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("Cat1"))
+    let cat = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("cat1"))
     cat.setScale(0.15)
     cat.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
 
