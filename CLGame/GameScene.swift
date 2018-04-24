@@ -116,13 +116,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       cat.removeAllActions()
       cat.texture = SKTexture(imageNamed: "cat7.png")
 
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
         self.removeAllActions()
         self.displayRestartButton()
       }
     }
 
     func startGame() {
+      showReplayButton = false
       startedGame = true
       lostGame = false
       score = 0
@@ -169,9 +170,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       // start game
       if !currentlyPlaying() {
-        for touch in touches {
-          if restartBtn.contains(touch.location(in: self)){
-            startGame()
+        if (showReplayButton) {
+          for touch in touches {
+            if restartBtn.contains(touch.location(in: self)){
+              startGame()
+            }
           }
         }
       } else {

@@ -15,6 +15,7 @@ struct CollisionBitMask {
 }
 
 var actualY: CGFloat = 185
+var showReplayButton = Bool (false)
 
 extension GameScene {
 
@@ -36,6 +37,7 @@ extension GameScene {
     restartBtn.addChild(winnerScoreLabel)
     self.addChild(restartBtn)
     restartBtn.run(SKAction.scale(to: 1.0, duration: 0.3))
+    showReplayButton = true
   }
 
   func createCat() -> SKSpriteNode {
