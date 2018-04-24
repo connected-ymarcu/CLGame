@@ -123,8 +123,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
       removeAllChildren()
 
+      setupScoringAction()
       createScene()
       spawnDeadlyObsticle()
+    }
+
+    func setupScoringAction()  {
+      let update = SKAction.run(
+      {
+        self.score += 1
+        self.scoreLbl.text = String(self.score)
+        }
+      )
+      let wait = SKAction.wait(forDuration: 3)
+      let seq = SKAction.sequence([wait,update])
+      let repeatAction = SKAction.repeatForever(seq)
+      run(repeatAction)
     }
 
     override func didMove(to view: SKView) {
@@ -139,8 +153,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
           // once each image moves fully to the left so position.x is -414, set its position.x to 414
           if bg.position.x <= -bg.size.width {
-            self.score += 1
-            self.scoreLbl.text = String(self.score)
             bg.position = CGPoint(x:bg.position.x + bg.size.width*2, y:bg.position.y)
           }
         }))
@@ -177,7 +189,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           endGame()
         }
       } else {
-        print("Cat touched something other than the flag")
         cat.removeAllActions()
       }
     }

@@ -19,11 +19,21 @@ var actualY: CGFloat = 185
 extension GameScene {
 
   func displayRestartButton() {
-    restartBtn = SKSpriteNode(imageNamed: "restart")
-    restartBtn.size = CGSize(width:100, height:100)
+    restartBtn = SKSpriteNode(imageNamed: "replay")
+    restartBtn.size = CGSize(width:300, height:300)
     restartBtn.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
     restartBtn.zPosition = 6
     restartBtn.setScale(0)
+
+    // final score label
+    let winnerScoreLabel = SKLabelNode(fontNamed:"Chalkduster")
+    winnerScoreLabel.text = String(score)
+    winnerScoreLabel.fontColor = UIColor(hex: "C1DCA6")
+    winnerScoreLabel.fontSize = 48
+    winnerScoreLabel.horizontalAlignmentMode = .center
+    winnerScoreLabel.verticalAlignmentMode = .center
+
+    restartBtn.addChild(winnerScoreLabel)
     self.addChild(restartBtn)
     restartBtn.run(SKAction.scale(to: 1.0, duration: 0.3))
   }
@@ -84,4 +94,25 @@ extension GameScene {
     return scoreLbl
   }
 
+}
+
+extension UIColor {
+  convenience init(hex: String) {
+    let scanner = Scanner(string: hex)
+    scanner.scanLocation = 0
+
+    var rgbValue: UInt64 = 0
+
+    scanner.scanHexInt64(&rgbValue)
+
+    let r = (rgbValue & 0xff0000) >> 16
+    let g = (rgbValue & 0xff00) >> 8
+    let b = rgbValue & 0xff
+
+    self.init(
+      red: CGFloat(r) / 0xff,
+      green: CGFloat(g) / 0xff,
+      blue: CGFloat(b) / 0xff, alpha: 1
+    )
+  }
 }
