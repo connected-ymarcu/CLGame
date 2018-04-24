@@ -87,9 +87,17 @@ extension GameScene {
     let scoreLbl = SKLabelNode()
     scoreLbl.text = "\(score)"
     scoreLbl.zPosition = 5
-    scoreLbl.fontSize = 50
-    scoreLbl.fontName = "HelveticaNeue-Bold"
-    scoreLbl.position = CGPoint(x: (self.frame.width - scoreLbl.frame.size.width - 40) , y: self.frame.height / 2 + self.frame.height / 2.6)
+    scoreLbl.fontSize = 44
+    scoreLbl.fontColor = UIColor(hex: "1D0E48")
+    scoreLbl.fontName = "Chalkduster"
+    scoreLbl.position = CGPoint(x: (self.frame.width - scoreLbl.frame.size.width - 40) , y: self.frame.height - scoreLbl.frame.size.height - 40)
+
+    // background
+    let scoreBackground = SKSpriteNode(imageNamed: "Moon")
+    scoreBackground.zPosition = -1
+    scoreBackground.position = CGPoint(x: 0, y: 9)  //fishy y position - MUST FIX
+
+    scoreLbl.addChild(scoreBackground)
 
     return scoreLbl
   }
