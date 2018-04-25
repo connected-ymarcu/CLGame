@@ -61,28 +61,50 @@ extension GameScene {
     return cat
   }
 
-  func createObsticle() -> SKSpriteNode {
+  func createGroundObsticle() -> SKSpriteNode {
 
-    obsticle = SKSpriteNode(imageNamed: "flag")
+    groundObsticle = SKSpriteNode(imageNamed: "moster1")
 
-    // randomize x and y position
-    actualY =  random(min: obsticle.size.height/2, max: 185)
-    let actualX = random(min: size.width + obsticle.size.width/2, max: size.width*3 )
-    obsticle.position = CGPoint(x: actualX, y: actualY)
+    // randomize y position
+    actualY =  random(min: groundObsticle.size.height, max: 185)
+    groundObsticle.position = CGPoint(x: size.width - 10, y: actualY)
 
     // physics body using texture’s alpha channel
-    let obsticleTexture = SKTexture(imageNamed: "flag.png")
+    let obsticleTexture = SKTexture(imageNamed: "moster1.png")
     let circularObsticle = SKSpriteNode(texture: obsticleTexture)
     circularObsticle.physicsBody = SKPhysicsBody(circleOfRadius: max(circularObsticle.size.width / 2, circularObsticle.size.height / 2))
-    obsticle.physicsBody = SKPhysicsBody(texture: obsticleTexture,
+    groundObsticle.physicsBody = SKPhysicsBody(texture: obsticleTexture,
                                          size: CGSize(width: circularObsticle.size.width,
                                                       height: circularObsticle.size.height))
 
-    obsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
-    obsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-    obsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+    groundObsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    groundObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+    groundObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
-    return obsticle
+    return groundObsticle
+  }
+
+  func createFlyingObsticle() -> SKSpriteNode {
+
+    flyingObsticle = SKSpriteNode(imageNamed: "toaster")
+    
+    // randomize y position
+    actualY =  random(min: (flyingObsticle.size.height + 340), max: frame.height)
+    flyingObsticle.position = CGPoint(x: size.width - 10, y: actualY)
+
+    // physics body using texture’s alpha channel
+    let obsticleTexture = SKTexture(imageNamed: "toaster.png")
+    let circularObsticle = SKSpriteNode(texture: obsticleTexture)
+    circularObsticle.physicsBody = SKPhysicsBody(circleOfRadius: max(circularObsticle.size.width / 2, circularObsticle.size.height / 2))
+    flyingObsticle.physicsBody = SKPhysicsBody(texture: obsticleTexture,
+                                         size: CGSize(width: circularObsticle.size.width,
+                                                      height: circularObsticle.size.height))
+
+    flyingObsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+    flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+
+    return flyingObsticle
   }
 
   func createScoreLabel() -> SKLabelNode {

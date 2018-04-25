@@ -27,7 +27,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var repeatActionCat = SKAction()
 
     // obstacle - rocks
-    var obsticle = SKSpriteNode()
+    var groundObsticle = SKSpriteNode()
+    var flyingObsticle = SKSpriteNode()
+
 
     // scene
     let backgroundName = "background"
@@ -81,22 +83,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if currentlyPlaying() {
         run(SKAction.repeatForever(
           SKAction.sequence([
-            SKAction.run(obsticleAction),
+            SKAction.run(gourndObsticleAction),
             SKAction.wait(forDuration: TimeInterval(3))
+            ])
+        ))
+
+        run(SKAction.repeatForever(
+          SKAction.sequence([
+            SKAction.run(flyingObsticleAction),
+            SKAction.wait(forDuration: TimeInterval(2))
             ])
         ))
       }
     }
 
-    func obsticleAction() {
-      obsticle = createObsticle()
-      addChild(obsticle)
+    func gourndObsticleAction() {
+      groundObsticle = createGroundObsticle()
+      addChild(groundObsticle)
 
-      // Determine speed of the rock
-      let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
-      let actionMove = SKAction.move(to: CGPoint(x: -obsticle.size.width/2, y: actualY), duration: TimeInterval(actualDuration))
+      // speed of the obsticle, smaller duration, faster the obsticle
+      let actualDuration = 3//random(min: CGFloat(1.0), max: CGFloat(6.0))
+      let actionMove = SKAction.move(to: CGPoint(x: -groundObsticle.size.width/2, y: random(min: groundObsticle.size.height/2, max: 185)), duration: TimeInterval(actualDuration))
+      print("\(groundObsticle.position), \(-groundObsticle.size.width/2), \(actualY), \(actualDuration), \(actionMove.speed)")
+
       let actionRemove = SKAction.removeFromParent()
-      obsticle.run(SKAction.sequence([actionMove, actionRemove]))
+      groundObsticle.run(SKAction.sequence([actionMove, actionRemove]))
+    }
+
+    func flyingObsticleAction() {
+      flyingObsticle = createFlyingObsticle()
+      addChild(flyingObsticle)
+
+      let actualDuration = 1//random(min: CGFloat(1.0), max: CGFloat(6.0))
+      let actionMove = SKAction.move(to: CGPoint(x: -flyingObsticle.size.width/2, y: actualY), duration: TimeInterval(actualDuration))
+      print("\(flyingObsticle.position), \(-flyingObsticle.size.width/2), \(actualY), \(actualDuration), \(actionMove.speed)")
+
+      let actionRemove = SKAction.removeFromParent()
+      flyingObsticle.run(SKAction.sequence([actionMove, actionRemove]))
     }
 
     func random(min : CGFloat, max : CGFloat) -> CGFloat{
@@ -182,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         cat.physicsBody?.affectedByGravity = true
         cat.run(repeatActionCat)
         cat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 250))
+        cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
       }
     }
 
