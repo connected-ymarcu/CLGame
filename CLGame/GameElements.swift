@@ -47,11 +47,12 @@ extension GameScene {
     cat.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
 
     // bounce/gravity
-    cat.physicsBody = SKPhysicsBody(circleOfRadius: cat.size.width / 2)
+    cat.physicsBody = SKPhysicsBody.init(texture: cat.texture!, alphaThreshold: 0.3, size: cat.size)
     cat.physicsBody?.linearDamping = 1.1
-    cat.physicsBody?.restitution = 0
-    cat.physicsBody?.affectedByGravity = true
+    cat.physicsBody?.restitution = 0.0
     cat.physicsBody?.isDynamic = true
+    cat.physicsBody?.affectedByGravity = true
+    cat.physicsBody?.allowsRotation = false
 
     // collisions/contacts
     cat.physicsBody?.categoryBitMask = CollisionBitMask.catCategory
@@ -69,16 +70,9 @@ extension GameScene {
     actualY =  random(min: groundObsticle.size.height, max: 185)
     groundObsticle.position = CGPoint(x: size.width - 10, y: actualY)
 
-    // physics body using texture’s alpha channel
-    let obsticleTexture = SKTexture(imageNamed: "moster1.png")
-    let circularObsticle = SKSpriteNode(texture: obsticleTexture)
-    circularObsticle.physicsBody = SKPhysicsBody(circleOfRadius: max(circularObsticle.size.width / 2, circularObsticle.size.height / 2))
-    groundObsticle.physicsBody = SKPhysicsBody(texture: obsticleTexture,
-                                         size: CGSize(width: circularObsticle.size.width,
-                                                      height: circularObsticle.size.height))
+    groundObsticle.physicsBody = SKPhysicsBody.init(texture: groundObsticle.texture!, alphaThreshold: 0.3, size: groundObsticle.size)
 
     groundObsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
-    groundObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
     groundObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
     return groundObsticle
@@ -92,16 +86,9 @@ extension GameScene {
     actualY =  random(min: (flyingObsticle.size.height + 340), max: frame.height)
     flyingObsticle.position = CGPoint(x: size.width - 10, y: actualY)
 
-    // physics body using texture’s alpha channel
-    let obsticleTexture = SKTexture(imageNamed: "toaster.png")
-    let circularObsticle = SKSpriteNode(texture: obsticleTexture)
-    circularObsticle.physicsBody = SKPhysicsBody(circleOfRadius: max(circularObsticle.size.width / 2, circularObsticle.size.height / 2))
-    flyingObsticle.physicsBody = SKPhysicsBody(texture: obsticleTexture,
-                                         size: CGSize(width: circularObsticle.size.width,
-                                                      height: circularObsticle.size.height))
+    flyingObsticle.physicsBody = SKPhysicsBody.init(texture: flyingObsticle.texture!, alphaThreshold: 0.3, size: flyingObsticle.size)
 
     flyingObsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
-    flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
     flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
     return flyingObsticle

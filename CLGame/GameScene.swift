@@ -131,6 +131,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func endGame() {
+      cat.physicsBody?.allowsRotation = true
       lostGame = true
       startedGame = false
 
