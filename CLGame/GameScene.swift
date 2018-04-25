@@ -15,6 +15,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var restartBtn = SKSpriteNode()
     var startedGame = false
     var lostGame = false
+    let numberOfGroundObsticles = 1.5
+    let numberOfFlyingObsticles = 2
+    let speedOfGroundObsticles = 3
+    let speedOfFlyingObsticles = 1
 
     // score
     var score = Int(0)
@@ -42,8 +46,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
       // setup contacting with the edge and collisions
       let edgeFrame = CGRect(
-        origin: CGPoint(x: 0, y: 90),
-        size: CGSize(width: self.frame.width, height: self.frame.height - 90)
+        origin: CGPoint(x: 0, y: 50),
+        size: CGSize(width: self.frame.width, height: self.frame.height - 50)
       )
       self.physicsBody = SKPhysicsBody(edgeLoopFrom: edgeFrame)
       self.physicsBody?.categoryBitMask = CollisionBitMask.moonCategory
@@ -83,26 +87,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if currentlyPlaying() {
         run(SKAction.repeatForever(
           SKAction.sequence([
-            SKAction.run(gourndObsticleAction),
-            SKAction.wait(forDuration: TimeInterval(3))
+            SKAction.run(groundObsticleAction),
+            SKAction.wait(forDuration: TimeInterval(numberOfGroundObsticles))
             ])
         ))
 
         run(SKAction.repeatForever(
           SKAction.sequence([
             SKAction.run(flyingObsticleAction),
-            SKAction.wait(forDuration: TimeInterval(2))
+            SKAction.wait(forDuration: TimeInterval(numberOfFlyingObsticles))
             ])
         ))
       }
     }
 
-    func gourndObsticleAction() {
+    func groundObsticleAction() {
       groundObsticle = createGroundObsticle()
       addChild(groundObsticle)
 
       // speed of the obsticle, smaller duration, faster the obsticle
-      let actualDuration = 3//random(min: CGFloat(1.0), max: CGFloat(6.0))
+      let actualDuration = speedOfGroundObsticles
       let actionMove = SKAction.move(to: CGPoint(x: -groundObsticle.size.width/2, y: random(min: groundObsticle.size.height/2, max: 185)), duration: TimeInterval(actualDuration))
       print("\(groundObsticle.position), \(-groundObsticle.size.width/2), \(actualY), \(actualDuration), \(actionMove.speed)")
 
@@ -114,7 +118,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       flyingObsticle = createFlyingObsticle()
       addChild(flyingObsticle)
 
-      let actualDuration = 1//random(min: CGFloat(1.0), max: CGFloat(6.0))
+      let actualDuration = speedOfFlyingObsticles
       let actionMove = SKAction.move(to: CGPoint(x: -flyingObsticle.size.width/2, y: actualY), duration: TimeInterval(actualDuration))
       print("\(flyingObsticle.position), \(-flyingObsticle.size.width/2), \(actualY), \(actualDuration), \(actionMove.speed)")
 
