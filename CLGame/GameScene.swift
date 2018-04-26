@@ -16,10 +16,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var startedGame = false
     var lostGame = false
     var isFlipped = false
-    let numberOfGroundObsticles = 1.5
-    let numberOfFlyingObsticles = 2
-    let speedOfGroundObsticles = 3
-    let speedOfFlyingObsticles = 1
+    let levelUpScore = 5
+  
+    // flying
+    var numberOfFlyingObsticles: Double  = 2
+    var speedOfFlyingObsticles: Double = 1
+    // ground
+    var numberOfGroundObsticles: Double = 3 // the lower, the more obsticles show up
+    var speedOfGroundObsticles: Double  = 3  // the lower, the faster obsticles move
   
     // score
     var score = Int(0)
@@ -31,7 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var catTextureArray = Array<SKTexture>()
     var repeatActionCat = SKAction()
 
-    // obstacle - rocks
+    // obstacle
     var groundObsticle = SKSpriteNode()
     var flyingObsticle = SKSpriteNode()
 
@@ -92,7 +96,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             SKAction.wait(forDuration: TimeInterval(numberOfGroundObsticles))
             ])
         ))
-
         run(SKAction.repeatForever(
           SKAction.sequence([
             SKAction.run(flyingObsticleAction),
@@ -167,21 +170,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func setupScoringAction()  {
-      let update = SKAction.run(
-      {
-        self.score += 1
-        self.scoreLbl.text = String(self.score)
-        // every 5th score flip gravity
-        if (self.score % 5 == 0) {
-          self.isFlipped = !self.isFlipped
-        }
-      })
+      let update = SKAction.run({self.levelUpGame()})
       let wait = SKAction.wait(forDuration: 3)
       let seq = SKAction.sequence([wait,update])
       let repeatAction = SKAction.repeatForever(seq)
       run(repeatAction)
     }
-
+  
+    func levelUpGame() {
+      score += 1
+      scoreLbl.text = String(score)
+      // every 5th score flip gravity
+      if (score % levelUpScore == 0) {
+        isFlipped = !isFlipped
+        if (!isFlipped) {
+          speedOfGroundObsticles *= 0.9
+          if speedOfGroundObsticles == 0 {
+            print("YOU BIT THE GAME")
+            endGame()
+          }
+        }
+      }
+      
+    }
+  
+  
     override func didMove(to view: SKView) {
       startGame()
     }
@@ -241,7 +254,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat) {
         if currentlyPlaying() {
           print("DEATH")
-          //endGame()
+          endGame()
         }
       } else {
         cat.removeAllActions()
