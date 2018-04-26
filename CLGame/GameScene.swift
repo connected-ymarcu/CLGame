@@ -42,6 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     // scene
     let backgroundName = "background"
+    var ground = SKSpriteNode()
 
     func currentlyPlaying () -> Bool {
       return startedGame && !lostGame
@@ -64,14 +65,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       // setup background - create 2 background image side by side
       for i in 0..<2
       {
-        let background = SKSpriteNode(imageNamed: "bg")
-        background.anchorPoint = CGPoint.init(x: 0, y: 0)
-        background.position = CGPoint(x:CGFloat(i) * self.frame.width, y:0)
-        background.name = backgroundName
-        background.size = (self.view?.bounds.size)!
-        self.addChild(background)
+        createBackground(imageNumber: i)
+        createGround(imageNumber: i)
       }
-
+      
       // setup cat animation
       cat = createCat()
       catTextureArray.append(catAtlas.textureNamed("cat1"))
@@ -87,7 +84,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       scoreLbl = createScoreLabel()
       self.addChild(scoreLbl)
     }
-
+  
+    func createBackground(imageNumber: Int) {
+      let backgroundTexture = SKTexture(imageNamed: "background")
+      let background = SKSpriteNode(texture: backgroundTexture)
+      background.setScale(0.7)
+      background.zPosition = -30
+      background.anchorPoint = CGPoint.zero
+      background.position = CGPoint(x: (background.size.width * CGFloat(imageNumber)) - CGFloat(1 * imageNumber), y: 0)
+      addChild(background)
+      
+      let moveLeft = SKAction.moveBy(x: -background.size.width, y: 0, duration: 30)
+      let moveReset = SKAction.moveBy(x: background.size.width, y: 0, duration: 0)
+      let moveLoop = SKAction.sequence([moveLeft, moveReset])
+      let moveForever = SKAction.repeatForever(moveLoop)
+      
+      background.run(moveForever)
+    }
+  
+    func createGround(imageNumber: Int) {
+      //ground
+      let groundTexture = SKTexture(imageNamed: "ground")
+      ground = SKSpriteNode(texture: groundTexture)
+      ground.setScale(0.7)
+      ground.zPosition = -10
+      ground.position = CGPoint(x: ground.size.width/2 + ground.size.width * CGFloat(imageNumber) , y: ground.size.height / 2)
+      
+      addChild(ground)
+      
+      let moveLeft = SKAction.moveBy(x: -ground.size.width, y: 0, duration: 5)
+      let moveReset = SKAction.moveBy(x: ground.size.width, y: 0, duration: 0)
+      let moveLoop = SKAction.sequence([moveLeft, moveReset])
+      let moveForever = SKAction.repeatForever(moveLoop)
+      
+      ground.run(moveForever)
+    }
+  
     func spawnDeadlyObsticle () {
       if currentlyPlaying() {
         run(SKAction.repeatForever(
@@ -194,7 +226,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       
     }
   
-  
     override func didMove(to view: SKView) {
       startGame()
     }
@@ -210,16 +241,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           cat.zRotation = 0
           cat.xScale = 1
         }
-        
-        enumerateChildNodes(withName: backgroundName, using: ({
-          (node, error) in
-          let bg = node as! SKSpriteNode
-          bg.position = CGPoint(x: bg.position.x - 2, y: bg.position.y)
-          // once each image moves fully to the left so position.x is -414, set its position.x to 414
-          if bg.position.x <= -bg.size.width {
-            bg.position = CGPoint(x:bg.position.x + bg.size.width*2, y:bg.position.y)
-          }
-        }))
       }
     }
 
