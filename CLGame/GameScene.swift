@@ -223,7 +223,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           }
         }
       }
-      
     }
   
     override func didMove(to view: SKView) {
@@ -262,17 +261,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -300))
         } else {
           cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
+        }
       }
     }
-
+  
     // MARK: - SKPhysicsContactDelegate
 
     func didBegin(_ contact: SKPhysicsContact) {
       // cat and obstacles touching
-      let catTouchesObstacle = contact.bodyA.categoryBitMask == CollisionBitMask.catCategory && contact.bodyB.categoryBitMask == CollisionBitMask.obstacleCategory
-      let obstacleTouchesCat = contact.bodyB.categoryBitMask == CollisionBitMask.catCategory && contact.bodyA.categoryBitMask == CollisionBitMask.obstacleCategory
+      let catTouchesObstacle = contact.bodyA.categoryBitMask == CollisionBitMask.catCategory && contact.bodyB.categoryBitMask == CollisionBitMask.groundObstacleCategory
+      let obstacleTouchesCat = contact.bodyB.categoryBitMask == CollisionBitMask.catCategory && contact.bodyA.categoryBitMask == CollisionBitMask.groundObstacleCategory
 
-      if (catTouchesObstacle || obstacleTouchesCat) {
+      let catTouchesFlyingObstacle = contact.bodyA.categoryBitMask == CollisionBitMask.catCategory && contact.bodyB.categoryBitMask == CollisionBitMask.flyingObstacleCategory
+      let flyingObstacleTouchesCat = contact.bodyB.categoryBitMask == CollisionBitMask.catCategory && contact.bodyA.categoryBitMask == CollisionBitMask.flyingObstacleCategory
+      
+      if (catTouchesObstacle || obstacleTouchesCat || catTouchesFlyingObstacle || flyingObstacleTouchesCat ) {
         if currentlyPlaying() {
           print("DEATH")
           endGame()
@@ -281,5 +284,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         cat.removeAllActions()
       }
     }
-  }
+      
 }

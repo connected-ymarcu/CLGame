@@ -10,7 +10,8 @@ import SpriteKit
 
 struct CollisionBitMask {
   static let catCategory:UInt32 = 0x1 << 0
-  static let obstacleCategory:UInt32 = 0x1 << 1
+  static let groundObstacleCategory:UInt32 = 0x1 << 1
+  static let flyingObstacleCategory:UInt32 = 0x1 << 1
   static let moonCategory:UInt32 = 0x1 << 2
 }
 
@@ -56,8 +57,8 @@ extension GameScene {
     
     // collisions/contacts
     cat.physicsBody?.categoryBitMask = CollisionBitMask.catCategory
-    cat.physicsBody?.collisionBitMask = CollisionBitMask.obstacleCategory | CollisionBitMask.moonCategory
-    cat.physicsBody?.contactTestBitMask = CollisionBitMask.obstacleCategory | CollisionBitMask.moonCategory
+    cat.physicsBody?.collisionBitMask = CollisionBitMask.flyingObstacleCategory | CollisionBitMask.groundObstacleCategory | CollisionBitMask.moonCategory
+    cat.physicsBody?.contactTestBitMask = CollisionBitMask.flyingObstacleCategory | CollisionBitMask.groundObstacleCategory | CollisionBitMask.moonCategory
 
     return cat
   }
@@ -72,7 +73,7 @@ extension GameScene {
 
     groundObsticle.physicsBody = SKPhysicsBody.init(texture: groundObsticle.texture!, alphaThreshold: 0.3, size: groundObsticle.size)
 
-    groundObsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    groundObsticle.physicsBody?.categoryBitMask = CollisionBitMask.groundObstacleCategory
     groundObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
     return groundObsticle
@@ -88,7 +89,7 @@ extension GameScene {
 
     flyingObsticle.physicsBody = SKPhysicsBody.init(texture: flyingObsticle.texture!, alphaThreshold: 0.3, size: flyingObsticle.size)
 
-    flyingObsticle.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    flyingObsticle.physicsBody?.categoryBitMask = CollisionBitMask.flyingObstacleCategory
     flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
     return flyingObsticle
