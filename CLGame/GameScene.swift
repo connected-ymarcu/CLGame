@@ -15,11 +15,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var restartBtn = SKSpriteNode()
     var startedGame = false
     var lostGame = false
+    var isFlipped = false
     let numberOfGroundObsticles = 1.5
     let numberOfFlyingObsticles = 2
     let speedOfGroundObsticles = 3
     let speedOfFlyingObsticles = 1
-
+  
     // score
     var score = Int(0)
     var scoreLbl = SKLabelNode()
@@ -55,7 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       self.physicsBody?.contactTestBitMask = CollisionBitMask.catCategory
       self.physicsWorld.contactDelegate = self
       self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)  // Jupiter gravity -24.8, moon gravity is -1.62
-
+      
       // setup background - create 2 background image side by side
       for i in 0..<2
       {
@@ -151,6 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func startGame() {
+      isFlipped = false
       showReplayButton = false
       startedGame = true
       lostGame = false
@@ -169,8 +171,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       {
         self.score += 1
         self.scoreLbl.text = String(self.score)
+        // every 5th score flip gravity
+        if (self.score % 5 == 0) {
+          self.isFlipped = !self.isFlipped
         }
-      )
+      })
       let wait = SKAction.wait(forDuration: 3)
       let seq = SKAction.sequence([wait,update])
       let repeatAction = SKAction.repeatForever(seq)
@@ -183,6 +188,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     override func update(_ currentTime: TimeInterval) {
       if currentlyPlaying() {
+        if (isFlipped) {
+          physicsWorld.gravity = CGVector(dx: 0.0, dy: 9.8)
+          cat.zRotation = CGFloat(Double.pi)
+          cat.xScale = -1
+        } else {
+          physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)
+          cat.zRotation = 0
+          cat.xScale = 1
+        }
+        
         enumerateChildNodes(withName: backgroundName, using: ({
           (node, error) in
           let bg = node as! SKSpriteNode
@@ -209,8 +224,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // repeat cat animation
         cat.physicsBody?.affectedByGravity = true
         cat.run(repeatActionCat)
-        cat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
+        if (isFlipped) {
+          cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -300))
+        } else {
+          cat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
       }
     }
 
@@ -224,11 +241,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat) {
         if currentlyPlaying() {
           print("DEATH")
-          endGame()
+          //endGame()
         }
       } else {
         cat.removeAllActions()
       }
     }
-
+  }
 }

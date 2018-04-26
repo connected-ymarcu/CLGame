@@ -43,9 +43,8 @@ extension GameScene {
   func createCat() -> SKSpriteNode {
     // size/position
     let cat = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("cat1"))
-    cat.setScale(0.15)
     cat.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
-
+    
     // bounce/gravity
     cat.physicsBody = SKPhysicsBody.init(texture: cat.texture!, alphaThreshold: 0.3, size: cat.size)
     cat.physicsBody?.linearDamping = 1.1
@@ -53,7 +52,8 @@ extension GameScene {
     cat.physicsBody?.isDynamic = true
     cat.physicsBody?.affectedByGravity = true
     cat.physicsBody?.allowsRotation = false
-
+    // flip cat zPosition
+    
     // collisions/contacts
     cat.physicsBody?.categoryBitMask = CollisionBitMask.catCategory
     cat.physicsBody?.collisionBitMask = CollisionBitMask.obstacleCategory | CollisionBitMask.moonCategory
