@@ -16,7 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var startedGame = false
     var lostGame = false
     var isFlipped = false
-    let levelUpScore = 5
+    let levelUpScore = 2
   
     // flying
     var numberOfFlyingObsticles: Double  = 2
@@ -39,10 +39,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var groundObsticle = SKSpriteNode()
     var flyingObsticle = SKSpriteNode()
 
-
     // scene
     let backgroundName = "background"
     var ground = SKSpriteNode()
+    var spaceShip = SKSpriteNode()
 
     func currentlyPlaying () -> Bool {
       return startedGame && !lostGame
@@ -53,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       // setup contacting with the edge and collisions
       let edgeFrame = CGRect(
         origin: CGPoint(x: 0, y: 50),
-        size: CGSize(width: self.frame.width, height: self.frame.height - 50)
+        size: CGSize(width: self.frame.width, height: self.frame.height + 200)
       )
       self.physicsBody = SKPhysicsBody(edgeLoopFrom: edgeFrame)
       self.physicsBody?.categoryBitMask = CollisionBitMask.moonCategory
@@ -68,6 +68,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         createBackground(imageNumber: i)
         createGround(imageNumber: i)
       }
+      
+      spaceShip = createSpaceShip()
+      self.addChild(spaceShip)
       
       // setup cat animation
       cat = createCat()

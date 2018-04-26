@@ -62,6 +62,25 @@ extension GameScene {
 
     return cat
   }
+  
+  func createSpaceShip() -> SKSpriteNode {
+    
+    let spaceShip = SKSpriteNode(imageNamed: "spaceShip")
+    spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height-50)
+    
+    // bounce/gravity
+    spaceShip.physicsBody = SKPhysicsBody.init(texture: spaceShip.texture!, alphaThreshold: 0.3, size: spaceShip.size)
+    spaceShip.physicsBody?.affectedByGravity = false
+    spaceShip.physicsBody?.allowsRotation = false
+    spaceShip.physicsBody?.isDynamic = false
+    
+    // collisions/contacts
+    spaceShip.physicsBody?.categoryBitMask = CollisionBitMask.moonCategory
+    spaceShip.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+    spaceShip.physicsBody?.contactTestBitMask = CollisionBitMask.catCategory
+    
+    return spaceShip
+  }
 
   func createGroundObsticle() -> SKSpriteNode {
 
@@ -102,12 +121,13 @@ extension GameScene {
     scoreLbl.fontSize = 44
     scoreLbl.fontColor = UIColor(hex: "1D0E48")
     scoreLbl.fontName = "Chalkduster"
-    scoreLbl.position = CGPoint(x: (self.frame.width - scoreLbl.frame.size.width - 40) , y: self.frame.height - scoreLbl.frame.size.height - 40)
+    scoreLbl.position = CGPoint(x: (self.frame.width - scoreLbl.frame.size.width - 20) , y: self.frame.height - scoreLbl.frame.size.height - 40)
 
     // background
     let scoreBackground = SKSpriteNode(imageNamed: "Moon")
+    scoreBackground.setScale(0.7)
     scoreBackground.zPosition = -1
-    scoreBackground.position = CGPoint(x: 0, y: 9)  //fishy y position - MUST FIX
+    scoreBackground.position = CGPoint(x: 0, y: 15)  //fishy y position - MUST FIX
 
     scoreLbl.addChild(scoreBackground)
 
