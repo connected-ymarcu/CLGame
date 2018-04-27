@@ -12,10 +12,13 @@ struct CollisionBitMask {
   static let catCategory:UInt32 = 0x1 << 0
   static let groundObstacleCategory:UInt32 = 0x1 << 1
   static let flyingObstacleCategory:UInt32 = 0x1 << 1
+  static let flyingObstacleCategory2:UInt32 = 0x1 << 1
   static let moonCategory:UInt32 = 0x1 << 2
 }
 
-var actualY: CGFloat = 185
+var randomY1: CGFloat = 185
+var randomY2: CGFloat = 185
+var randomY3: CGFloat = 185
 var showReplayButton = Bool (false)
 
 extension GameScene {
@@ -84,11 +87,11 @@ extension GameScene {
 
   func createGroundObsticle() -> SKSpriteNode {
 
-    groundObsticle = SKSpriteNode(imageNamed: "moster1")
+    groundObsticle = SKSpriteNode(imageNamed: "pizza")
 
     // randomize y position
-    actualY =  random(min: groundObsticle.size.height, max: 185)
-    groundObsticle.position = CGPoint(x: size.width - 10, y: actualY)
+    randomY1 =  random(min: groundObsticle.size.height + 200, max: frame.height - groundObsticle.size.height - spaceShip.size.height)
+    groundObsticle.position = CGPoint(x: size.width - 10, y: randomY1)
 
     groundObsticle.physicsBody = SKPhysicsBody.init(texture: groundObsticle.texture!, alphaThreshold: 0.3, size: groundObsticle.size)
 
@@ -100,11 +103,11 @@ extension GameScene {
 
   func createFlyingObsticle() -> SKSpriteNode {
 
-    flyingObsticle = SKSpriteNode(imageNamed: "toaster")
+    flyingObsticle = SKSpriteNode(imageNamed: "cup")
     
     // randomize y position
-    actualY =  random(min: (flyingObsticle.size.height + 340), max: frame.height)
-    flyingObsticle.position = CGPoint(x: size.width - 10, y: actualY)
+    randomY2 =  random(min: flyingObsticle.size.height + 200, max: frame.height - flyingObsticle.size.height - spaceShip.size.height)
+    flyingObsticle.position = CGPoint(x: size.width - 10, y: randomY2)
 
     flyingObsticle.physicsBody = SKPhysicsBody.init(texture: flyingObsticle.texture!, alphaThreshold: 0.3, size: flyingObsticle.size)
 
@@ -112,6 +115,22 @@ extension GameScene {
     flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
     return flyingObsticle
+  }
+
+  func createFlyingObsticle2() -> SKSpriteNode {
+
+    flyingObsticle2 = SKSpriteNode(imageNamed: "popcan")
+
+    // randomize y position
+    randomY3 =  random(min: flyingObsticle2.size.height + 50, max: frame.height - flyingObsticle2.size.height - spaceShip.size.height)
+    flyingObsticle2.position = CGPoint(x: size.width - 10, y: randomY3)
+
+    flyingObsticle2.physicsBody = SKPhysicsBody.init(texture: flyingObsticle2.texture!, alphaThreshold: 0.3, size: flyingObsticle2.size)
+
+    flyingObsticle2.physicsBody?.categoryBitMask = CollisionBitMask.flyingObstacleCategory2
+    flyingObsticle2.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
+
+    return flyingObsticle2
   }
 
   func createScoreLabel() -> SKLabelNode {

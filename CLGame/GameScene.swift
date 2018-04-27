@@ -20,11 +20,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
   
     // flying
     var numberOfFlyingObsticles: Double  = 2
-    var speedOfFlyingObsticles: Double = 1
+    var speedOfFlyingObsticles: Double = 2
     // ground
     var numberOfGroundObsticles: Double = 3 // the lower, the more obsticles show up
     var speedOfGroundObsticles: Double  = 3  // the lower, the faster obsticles move
-  
+    // flying 2
+    var numberOfGroundObsticles2: Double = 1
+    var speedOfGroundObsticles2: Double  = 1
+
     // score
     var score = Int(0)
     var scoreLbl = SKLabelNode()
@@ -38,6 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     // obstacle
     var groundObsticle = SKSpriteNode()
     var flyingObsticle = SKSpriteNode()
+    var flyingObsticle2 = SKSpriteNode()
 
     // scene
     let backgroundName = "background"
@@ -122,15 +126,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       
       ground.run(moveForever)
     }
-  
-    func spawnDeadlyObsticle () {
-      if currentlyPlaying() {
+
+      func spawnObsticle1 () {
         run(SKAction.repeatForever(
           SKAction.sequence([
             SKAction.run(groundObsticleAction),
             SKAction.wait(forDuration: TimeInterval(numberOfGroundObsticles))
             ])
         ))
+      }
+
+      func spawnObsticle2 () {
         run(SKAction.repeatForever(
           SKAction.sequence([
             SKAction.run(flyingObsticleAction),
@@ -138,17 +144,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             ])
         ))
       }
-    }
+
+      func spawnObsticle3 () {
+        run(SKAction.repeatForever(
+          SKAction.sequence([
+            SKAction.run(flyingObsticleAction2),
+            SKAction.wait(forDuration: TimeInterval(numberOfGroundObsticles2))
+            ])
+        ))
+      }
 
     func groundObsticleAction() {
       groundObsticle = createGroundObsticle()
       addChild(groundObsticle)
 
-      // speed of the obsticle, smaller duration, faster the obsticle
-      let actualDuration = speedOfGroundObsticles
-      let actionMove = SKAction.move(to: CGPoint(x: -groundObsticle.size.width/2, y: random(min: groundObsticle.size.height/2, max: 185)), duration: TimeInterval(actualDuration))
-      print("\(groundObsticle.position), \(-groundObsticle.size.width/2), \(actualY), \(actualDuration), \(actionMove.speed)")
-
+      let actionMove = SKAction.move(to: CGPoint(x: -groundObsticle.size.width/2, y: randomY1), duration: TimeInterval(speedOfGroundObsticles))
       let actionRemove = SKAction.removeFromParent()
       groundObsticle.run(SKAction.sequence([actionMove, actionRemove]))
     }
@@ -157,12 +167,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       flyingObsticle = createFlyingObsticle()
       addChild(flyingObsticle)
 
-      let actualDuration = speedOfFlyingObsticles
-      let actionMove = SKAction.move(to: CGPoint(x: -flyingObsticle.size.width/2, y: actualY), duration: TimeInterval(actualDuration))
-      print("\(flyingObsticle.position), \(-flyingObsticle.size.width/2), \(actualY), \(actualDuration), \(actionMove.speed)")
-
+      let actionMove = SKAction.move(to: CGPoint(x: -flyingObsticle.size.width/2, y: randomY2), duration: TimeInterval(speedOfFlyingObsticles))
       let actionRemove = SKAction.removeFromParent()
       flyingObsticle.run(SKAction.sequence([actionMove, actionRemove]))
+    }
+
+    func flyingObsticleAction2() {
+      flyingObsticle2 = createFlyingObsticle2()
+      addChild(flyingObsticle2)
+
+      let actionMove = SKAction.move(to: CGPoint(x: -flyingObsticle2.size.width/2, y: randomY3), duration: TimeInterval(speedOfGroundObsticles2))
+      let actionRemove = SKAction.removeFromParent()
+      flyingObsticle2.run(SKAction.sequence([actionMove, actionRemove]))
     }
 
     func random(min : CGFloat, max : CGFloat) -> CGFloat{
@@ -201,7 +217,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
       setupScoringAction()
       createScene()
-      spawnDeadlyObsticle()
+
+      spawnObsticle1()
     }
 
     func setupScoringAction()  {
@@ -215,6 +232,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func levelUpGame() {
       score += 1
       scoreLbl.text = String(score)
+
+      if (score == levelUpScore*2) {
+        spawnObsticle2()
+      } else if (score == levelUpScore*4){
+        spawnObsticle3()
+      }
+
       // every 5th score flip gravity
       if (score % levelUpScore == 0) {
         isFlipped = !isFlipped
@@ -281,7 +305,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat || catTouchesFlyingObstacle || flyingObstacleTouchesCat ) {
         if currentlyPlaying() {
           print("DEATH")
-          endGame()
+          //endGame()
         }
       } else {
         cat.removeAllActions()
