@@ -46,6 +46,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     // scene
     let backgroundName = "background"
     var ground = SKSpriteNode()
+    var mountain = SKSpriteNode()
     var spaceShip = SKSpriteNode()
 
     func currentlyPlaying () -> Bool {
@@ -70,6 +71,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       for i in 0..<2
       {
         createBackground(imageNumber: i)
+        createMountain(imageNumber: i)
         createGround(imageNumber: i)
       }
       
@@ -107,10 +109,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let moveForever = SKAction.repeatForever(moveLoop)
       
       background.run(moveForever)
+
+  }
+    func createMountain(imageNumber: Int) {
+      let mountainTexture = SKTexture(imageNamed: "mountain")
+      mountain = SKSpriteNode(texture: mountainTexture)
+      mountain.setScale(0.85)
+      mountain.zPosition = -20
+      mountain.position = CGPoint(x: mountain.size.width/2 + mountain.size.width * CGFloat(imageNumber) , y: mountain.size.height / 2)
+
+      addChild(mountain)
+
+      let moveLeft = SKAction.moveBy(x: -mountain.size.width, y: 0, duration: 15)
+      let moveReset = SKAction.moveBy(x: mountain.size.width, y: 0, duration: 0)
+      let moveLoop = SKAction.sequence([moveLeft, moveReset])
+      let moveForever = SKAction.repeatForever(moveLoop)
+
+      mountain.run(moveForever)
     }
-  
+
     func createGround(imageNumber: Int) {
-      //ground
       let groundTexture = SKTexture(imageNamed: "ground")
       ground = SKSpriteNode(texture: groundTexture)
       ground.setScale(0.7)
@@ -119,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       
       addChild(ground)
       
-      let moveLeft = SKAction.moveBy(x: -ground.size.width, y: 0, duration: 5)
+      let moveLeft = SKAction.moveBy(x: -ground.size.width, y: 0, duration: 7)
       let moveReset = SKAction.moveBy(x: ground.size.width, y: 0, duration: 0)
       let moveLoop = SKAction.sequence([moveLeft, moveReset])
       let moveForever = SKAction.repeatForever(moveLoop)
@@ -305,7 +323,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat || catTouchesFlyingObstacle || flyingObstacleTouchesCat ) {
         if currentlyPlaying() {
           print("DEATH")
-          //endGame()
+          endGame()
         }
       } else {
         cat.removeAllActions()
