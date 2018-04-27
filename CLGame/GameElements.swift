@@ -69,6 +69,7 @@ extension GameScene {
   func createSpaceShip() -> SKSpriteNode {
     
     let spaceShip = SKSpriteNode(imageNamed: "spaceShip")
+    spaceShip.setScale(0.9)
     spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height - spaceShip.size.height/2)
     
     // bounce/gravity
