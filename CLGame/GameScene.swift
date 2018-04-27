@@ -264,7 +264,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           speedOfGroundObsticles *= 0.9
           if speedOfGroundObsticles == 0 {
             print("YOU BIT THE GAME")
-            endGame()
+//            endGame()
           }
         }
       }

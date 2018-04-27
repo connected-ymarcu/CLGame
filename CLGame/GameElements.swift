@@ -69,7 +69,7 @@ extension GameScene {
   func createSpaceShip() -> SKSpriteNode {
     
     let spaceShip = SKSpriteNode(imageNamed: "spaceShip")
-    spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height-50)
+    spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height - spaceShip.size.height/2)
     
     // bounce/gravity
     spaceShip.physicsBody = SKPhysicsBody.init(texture: spaceShip.texture!, alphaThreshold: 0.3, size: spaceShip.size)
@@ -88,6 +88,7 @@ extension GameScene {
   func createGroundObsticle() -> SKSpriteNode {
 
     groundObsticle = SKSpriteNode(imageNamed: "pizza")
+    groundObsticle.setScale(0.5)
 
     // randomize y position
     randomY1 =  random(min: groundObsticle.size.height + 200, max: frame.height - groundObsticle.size.height - spaceShip.size.height)
@@ -104,7 +105,8 @@ extension GameScene {
   func createFlyingObsticle() -> SKSpriteNode {
 
     flyingObsticle = SKSpriteNode(imageNamed: "cup")
-    
+    flyingObsticle.setScale(0.5)
+
     // randomize y position
     randomY2 =  random(min: flyingObsticle.size.height + 200, max: frame.height - flyingObsticle.size.height - spaceShip.size.height)
     flyingObsticle.position = CGPoint(x: size.width - 10, y: randomY2)
@@ -120,6 +122,7 @@ extension GameScene {
   func createFlyingObsticle2() -> SKSpriteNode {
 
     flyingObsticle2 = SKSpriteNode(imageNamed: "popcan")
+    flyingObsticle2.setScale(0.5)
 
     // randomize y position
     randomY3 =  random(min: flyingObsticle2.size.height + 50, max: frame.height - flyingObsticle2.size.height - spaceShip.size.height)
