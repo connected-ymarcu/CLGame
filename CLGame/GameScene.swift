@@ -208,6 +208,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func endGame() {
+
+      // save the highest score
+      if (score > UserDefaults.standard.integer(forKey: "highestScore")) {
+        UserDefaults.standard.set(score, forKey: "highestScore")
+      }
+
       cat.physicsBody?.allowsRotation = true
       lostGame = true
       startedGame = false
@@ -229,6 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       startedGame = true
       lostGame = false
       score = 0
+      speedOfGroundObsticles = 3
       catTextureArray.removeAll()
 
       removeAllChildren()
@@ -249,7 +256,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
   
     func levelUpGame() {
       score += 1
-      scoreLbl.text = String(score)
+      scoreLbl.text = "\(score)"
 
       if (score == levelUpScore*2) {
         spawnObsticle2()
@@ -264,7 +271,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
           speedOfGroundObsticles *= 0.9
           if speedOfGroundObsticles == 0 {
             print("YOU BIT THE GAME")
-//            endGame()
+            endGame()
           }
         }
       }
