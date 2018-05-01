@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4286CCA2098FF0B007741D4 /* OhNo1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F4286CC92098FF0B007741D4 /* OhNo1.mp3 */; };
 		F4418F3F20878112002084B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4418F3E20878112002084B3 /* AppDelegate.swift */; };
 		F4418F4120878112002084B3 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F4418F4020878112002084B3 /* GameScene.sks */; };
 		F4418F4320878112002084B3 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = F4418F4220878112002084B3 /* Actions.sks */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F4286CC92098FF0B007741D4 /* OhNo1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = OhNo1.mp3; sourceTree = "<group>"; };
 		F4418F3B20878112002084B3 /* CLGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CLGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4418F3E20878112002084B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4418F4020878112002084B3 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				F4418F4420878112002084B3 /* GameScene.swift */,
 				F4418F4620878112002084B3 /* GameViewController.swift */,
 				F4418F4820878112002084B3 /* Main.storyboard */,
+				F4286CC92098FF0B007741D4 /* OhNo1.mp3 */,
 				F4418F4B20878112002084B3 /* Assets.xcassets */,
 				F4418F5A2087C947002084B3 /* player.atlas */,
 				F4418F4D20878112002084B3 /* LaunchScreen.storyboard */,
@@ -143,6 +146,7 @@
 				F4418F4120878112002084B3 /* GameScene.sks in Resources */,
 				F4418F4C20878112002084B3 /* Assets.xcassets in Resources */,
 				F4418F4F20878112002084B3 /* LaunchScreen.storyboard in Resources */,
+				F4286CCA2098FF0B007741D4 /* OhNo1.mp3 in Resources */,
 				F4418F4320878112002084B3 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

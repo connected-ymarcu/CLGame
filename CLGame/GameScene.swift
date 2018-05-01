@@ -210,6 +210,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     func endGame() {
 
+      run(SKAction.playSoundFileNamed("OhNo1.mp3", waitForCompletion: true))
+
       // save the highest score
       if (score > UserDefaults.standard.integer(forKey: "highestScore")) {
         UserDefaults.standard.set(score, forKey: "highestScore")
