@@ -48,6 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var ground = SKSpriteNode()
     var mountain = SKSpriteNode()
     var spaceShip = SKSpriteNode()
+    var beam = SKSpriteNode()
 
     func currentlyPlaying () -> Bool {
       return startedGame && !lostGame
@@ -273,6 +274,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             print("YOU BIT THE GAME")
             endGame()
           }
+          // fade out beam
+          beam.run(SKAction.sequence([SKAction.scale(to: 0.01, duration: 1), SKAction.fadeOut(withDuration: 0.5)]), completion: {
+            self.spaceShip.removeAllChildren()
+          })
+        } else {
+          // fade In beam
+          beam = createBeam()
+          spaceShip.addChild(beam)
+          beam.run(SKAction.sequence([SKAction.scale(to: 2, duration: 2), SKAction.fadeIn(withDuration: 0.5)]))
         }
       }
     }

@@ -56,8 +56,7 @@ extension GameScene {
     cat.physicsBody?.isDynamic = true
     cat.physicsBody?.affectedByGravity = true
     cat.physicsBody?.allowsRotation = false
-    // flip cat zPosition
-    
+
     // collisions/contacts
     cat.physicsBody?.categoryBitMask = CollisionBitMask.catCategory
     cat.physicsBody?.collisionBitMask = CollisionBitMask.flyingObstacleCategory | CollisionBitMask.groundObstacleCategory | CollisionBitMask.moonCategory
@@ -84,6 +83,15 @@ extension GameScene {
     spaceShip.physicsBody?.contactTestBitMask = CollisionBitMask.catCategory
     
     return spaceShip
+  }
+
+  func createBeam() -> SKSpriteNode {
+    beam = SKSpriteNode(imageNamed: "beam")
+    beam.name = "beam"
+    beam.setScale(0.1)
+    beam.anchorPoint = CGPoint(x: 0.5, y: 1)
+    beam.position = CGPoint(x: 0, y: -spaceShip.size.height/2)
+    return beam
   }
 
   func createGroundObsticle() -> SKSpriteNode {
