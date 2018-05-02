@@ -69,7 +69,13 @@ extension GameScene {
     
     let spaceShip = SKSpriteNode(imageNamed: "spaceShip")
     spaceShip.setScale(0.9)
-    spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height - spaceShip.size.height/2)
+
+    var iPhoneXNotchOffset: CGFloat = 0
+    if UIScreen.main.nativeBounds.height == 2436 {
+      iPhoneXNotchOffset = 44
+    }
+    
+    spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height - spaceShip.size.height/2 - iPhoneXNotchOffset)
     
     // bounce/gravity
     spaceShip.physicsBody = SKPhysicsBody.init(texture: spaceShip.texture!, alphaThreshold: 0.3, size: spaceShip.size)
@@ -94,6 +100,14 @@ extension GameScene {
     return beam
   }
 
+  func createStar() -> SKSpriteNode {
+    star = SKSpriteNode(imageNamed: "star3")
+    star.setScale(0.5)
+    star.zPosition = -25
+    star.position = CGPoint(x: random(min: 10, max: size.width - 10), y: random(min: frame.midY, max: frame.height))
+    return star
+  }
+  
   func createGroundObsticle() -> SKSpriteNode {
 
     groundObsticle = SKSpriteNode(imageNamed: "pizza")

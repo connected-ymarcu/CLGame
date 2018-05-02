@@ -20,7 +20,7 @@ class GameViewController: UIViewController {
         scene.scaleMode = .resizeFill
 
         // testing purposes
-        skView.preferredFramesPerSecond = 60  //default is 60fps
+        skView.preferredFramesPerSecond = 45
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.showsPhysics = true

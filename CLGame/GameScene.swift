@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var mountain = SKSpriteNode()
     var spaceShip = SKSpriteNode()
     var beam = SKSpriteNode()
+    var star = SKSpriteNode()
 
     func currentlyPlaying () -> Bool {
       return startedGame && !lostGame
@@ -247,6 +248,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       createScene()
 
       spawnObsticle1()
+      
+      // fade in/out stars
+      run(SKAction.repeatForever(
+        SKAction.sequence([
+          SKAction.run(starAction),
+          SKAction.wait(forDuration: TimeInterval(1))
+          ])
+      ))
+  
+    }
+  
+    func starAction() {
+      star = createStar()
+      addChild(star)
+      let scale = SKAction.scale(to: 0.1, duration: 0.5)
+      let actionRemove = SKAction.removeFromParent()
+      star.run(SKAction.sequence([scale, SKAction.fadeOut(withDuration: 0.5), actionRemove]))
     }
 
     func setupScoringAction()  {
@@ -342,7 +360,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat || catTouchesFlyingObstacle || flyingObstacleTouchesCat ) {
         if currentlyPlaying() {
           print("DEATH")
-          endGame()
+//          endGame()
         }
       } else {
         cat.removeAllActions()
