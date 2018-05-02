@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate{
 
     // game loop
-    var restartButton = SKSpriteNode()
+    private var restartButton = SKSpriteNode()
     var startedGame = false
     var lostGame = false
     var isFlipped = false
@@ -20,18 +20,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     // score
     var score = Int(0)
-    var scoreLbl = SKLabelNode()
+    private var scoreLabel = SKLabelNode()
 
     // cat
-    var cat = SKSpriteNode()
-    let catAtlas = SKTextureAtlas(named:"player")
-    var catTextureArray = Array<SKTexture>()
-    var repeatActionCat = SKAction()
+    private var cat = SKSpriteNode()
+    private var catTextureArray = Array<SKTexture>()
+    private var repeatActionCat = SKAction()
 
     // scene
     var spaceShip = SKSpriteNode()
-    var beam = SKSpriteNode()
-    var star = SKSpriteNode()
+    private var beam = SKSpriteNode()
+    private var star = SKSpriteNode()
 
     func currentlyPlaying () -> Bool {
       return startedGame && !lostGame
@@ -47,6 +46,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       
       // Cat
       cat = createCat()
+      let catAtlas = SKTextureAtlas(named:"player")
       catTextureArray.append(catAtlas.textureNamed("cat1"))
       catTextureArray.append(catAtlas.textureNamed("cat2"))
       catTextureArray.append(catAtlas.textureNamed("cat3"))
@@ -56,8 +56,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       repeatActionCat = SKAction.repeatForever(animateCat)
       
       // Score
-      scoreLbl = createScoreLabel()
-      addChild(scoreLbl)
+      scoreLabel = createScoreLabel()
+      addChild(scoreLabel)
       scoreAction()
       
       // Obsticle
@@ -122,10 +122,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     // MARK - Spawn Obsticles
   
-    var obsticle1 = SKSpriteNode()
-    var obsticle2 = SKSpriteNode()
-    var obsticle3 = SKSpriteNode()
-
     // obsticle 1
     var numObsticle1: Double = 3 // the lower, the more obsticles show up
     var speedOfObsticle1: Double  = 3  // the lower, the faster obsticles move
@@ -164,7 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func obsticleAction1() {
-      obsticle1 = createObsticle1()
+      let obsticle1 = createObsticle1()
       addChild(obsticle1)
 
       let actionMove = SKAction.move(to: CGPoint(x: -obsticle1.size.width/2, y: randomY1), duration: TimeInterval(speedOfObsticle1))
@@ -173,7 +169,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func obsticleAction2() {
-      obsticle2 = createObsticle2()
+      let obsticle2 = createObsticle2()
       addChild(obsticle2)
 
       let actionMove = SKAction.move(to: CGPoint(x: -obsticle2.size.width/2, y: randomY2), duration: TimeInterval(speedOfObsticle2))
@@ -182,7 +178,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func obsticleAction3() {
-      obsticle3 = createObsticle3()
+      let obsticle3 = createObsticle3()
       addChild(obsticle3)
 
       let actionMove = SKAction.move(to: CGPoint(x: -obsticle3.size.width/2, y: randomY3), duration: TimeInterval(speedOfObsticle3))
@@ -228,7 +224,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
   
     func levelUpGame() {
       score += 1
-      scoreLbl.text = "\(score)"
+      scoreLabel.text = "\(score)"
 
       if (score == levelUpScore*2) {
         spawnObsticle2()
