@@ -124,7 +124,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
   
     // obsticle 1
     var numObsticle1: Double = 3 // the lower, the more obsticles show up
-    var speedOfObsticle1: Double  = 3  // the lower, the faster obsticles move
+    var speedOfObsticle1: Double  = 4  // the lower, the faster obsticles move
     // obsticle 2
     var numOfObsticle2: Double  = 2
     var speedOfObsticle2: Double = 2

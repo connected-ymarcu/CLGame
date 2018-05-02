@@ -24,20 +24,30 @@ extension GameScene {
 
   func createRestartButton() -> SKSpriteNode {
     let restart = SKSpriteNode(imageNamed: "replay")
-    restart.size = CGSize(width:300, height:300)
-    restart.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+    restart.size = CGSize(width:frame.size.width - 60, height:170)
+    restart.position = CGPoint(x: frame.midX, y: frame.midY)
     restart.zPosition = 6
-    restart.setScale(0)
 
-    // final score label
-    let winnerScoreLabel = SKLabelNode(fontNamed:"Chalkduster")
-    winnerScoreLabel.text = String(score)
-    winnerScoreLabel.fontColor = UIColor(hex: "C1DCA6")
-    winnerScoreLabel.fontSize = 48
+    let savedhighestScore = UserDefaults.standard.integer(forKey: "highestScore")
+    
+    // RIGHT - scores
+    let winnerScoreLabel = SKLabelNode(fontNamed:"fredoka one")
+    winnerScoreLabel.text = "Score \(score)\nBest \(savedhighestScore)"
+    winnerScoreLabel.numberOfLines = 0
+    winnerScoreLabel.preferredMaxLayoutWidth = 1000
+    winnerScoreLabel.fontColor = UIColor(hex: "1E0F4B")
+    winnerScoreLabel.fontSize = 28
     winnerScoreLabel.horizontalAlignmentMode = .center
     winnerScoreLabel.verticalAlignmentMode = .center
-
+    winnerScoreLabel.position = CGPoint(x: restart.size.width/4, y: -restart.size.height/4)
+    
+    // LEFT - reply button
+    let replayButton = SKSpriteNode(imageNamed: "replayButton")
+    replayButton.setScale(0.2)
+    replayButton.position = CGPoint(x: -restart.size.width/4, y: -restart.size.height/4)
+    
     restart.addChild(winnerScoreLabel)
+    restart.addChild(replayButton)
     
     return restart
   }
