@@ -18,14 +18,17 @@ class GameViewController: UIViewController {
         let scene = GameScene(size: view.bounds.size)
         let skView = view as! SKView
         scene.scaleMode = .resizeFill
-
-        // testing purposes
-        skView.preferredFramesPerSecond = 45
+      
+        setupDebugingProperties(skView)
+      
+        skView.preferredFramesPerSecond = 55
+        skView.presentScene(scene)
+    }
+  
+    func setupDebugingProperties(_ skView: SKView) {
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.showsPhysics = true
-
-        skView.presentScene(scene)
     }
 
     override var shouldAutorotate: Bool {

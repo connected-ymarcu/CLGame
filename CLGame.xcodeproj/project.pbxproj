@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F04510B2099DEE4005AB12B /* UIColor+HexConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F04510A2099DEE4005AB12B /* UIColor+HexConversion.swift */; };
+		0F0451112099EF0F005AB12B /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0451102099EF0F005AB12B /* Helper.swift */; };
+		0F045113209A312F005AB12B /* SKAction+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F045112209A312F005AB12B /* SKAction+Helper.swift */; };
 		F4286CCA2098FF0B007741D4 /* OhNo1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F4286CC92098FF0B007741D4 /* OhNo1.mp3 */; };
 		F4418F3F20878112002084B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4418F3E20878112002084B3 /* AppDelegate.swift */; };
 		F4418F4520878112002084B3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4418F4420878112002084B3 /* GameScene.swift */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F04510A2099DEE4005AB12B /* UIColor+HexConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexConversion.swift"; sourceTree = "<group>"; };
+		0F0451102099EF0F005AB12B /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		0F045112209A312F005AB12B /* SKAction+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKAction+Helper.swift"; sourceTree = "<group>"; };
 		F4286CC92098FF0B007741D4 /* OhNo1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = OhNo1.mp3; sourceTree = "<group>"; };
 		F4418F3B20878112002084B3 /* CLGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CLGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4418F3E20878112002084B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +49,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F04510C2099DFBB005AB12B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0F04510A2099DEE4005AB12B /* UIColor+HexConversion.swift */,
+				0F0451102099EF0F005AB12B /* Helper.swift */,
+				0F045112209A312F005AB12B /* SKAction+Helper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		0F04510D2099DFCE005AB12B /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				F4286CC92098FF0B007741D4 /* OhNo1.mp3 */,
+			);
+			path = Sound;
+			sourceTree = "<group>";
+		};
 		F4418F3220878112002084B3 = {
 			isa = PBXGroup;
 			children = (
@@ -62,16 +86,17 @@
 		F4418F3D20878112002084B3 /* CLGame */ = {
 			isa = PBXGroup;
 			children = (
-				F4418F3E20878112002084B3 /* AppDelegate.swift */,
+				0F04510D2099DFCE005AB12B /* Sound */,
+				0F04510C2099DFBB005AB12B /* Utilities */,
 				F4418F582087C5B8002084B3 /* GameElements.swift */,
 				F4418F4420878112002084B3 /* GameScene.swift */,
 				F4418F4620878112002084B3 /* GameViewController.swift */,
+				F4418F3E20878112002084B3 /* AppDelegate.swift */,
 				F4418F4820878112002084B3 /* Main.storyboard */,
-				F4286CC92098FF0B007741D4 /* OhNo1.mp3 */,
-				F4418F4B20878112002084B3 /* Assets.xcassets */,
-				F4418F5A2087C947002084B3 /* player.atlas */,
 				F4418F4D20878112002084B3 /* LaunchScreen.storyboard */,
 				F4418F5020878112002084B3 /* Info.plist */,
+				F4418F4B20878112002084B3 /* Assets.xcassets */,
+				F4418F5A2087C947002084B3 /* player.atlas */,
 			);
 			path = CLGame;
 			sourceTree = "<group>";
@@ -150,8 +175,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F0451112099EF0F005AB12B /* Helper.swift in Sources */,
 				F4418F592087C5B8002084B3 /* GameElements.swift in Sources */,
 				F4418F4520878112002084B3 /* GameScene.swift in Sources */,
+				0F045113209A312F005AB12B /* SKAction+Helper.swift in Sources */,
+				0F04510B2099DEE4005AB12B /* UIColor+HexConversion.swift in Sources */,
 				F4418F4720878112002084B3 /* GameViewController.swift in Sources */,
 				F4418F3F20878112002084B3 /* AppDelegate.swift in Sources */,
 			);

@@ -10,25 +10,24 @@ import SpriteKit
 
 struct CollisionBitMask {
   static let catCategory:UInt32 = 0x1 << 0
-  static let groundObstacleCategory:UInt32 = 0x1 << 1
-  static let flyingObstacleCategory:UInt32 = 0x1 << 1
-  static let flyingObstacleCategory2:UInt32 = 0x1 << 1
+  static let obstacleCategory:UInt32 = 0x1 << 1
   static let moonCategory:UInt32 = 0x1 << 2
 }
 
 var randomY1: CGFloat = 185
 var randomY2: CGFloat = 185
 var randomY3: CGFloat = 185
+
 var showReplayButton = Bool (false)
 
 extension GameScene {
 
-  func displayRestartButton() {
-    restartBtn = SKSpriteNode(imageNamed: "replay")
-    restartBtn.size = CGSize(width:300, height:300)
-    restartBtn.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
-    restartBtn.zPosition = 6
-    restartBtn.setScale(0)
+  func createRestartButton() -> SKSpriteNode {
+    let restart = SKSpriteNode(imageNamed: "replay")
+    restart.size = CGSize(width:300, height:300)
+    restart.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+    restart.zPosition = 6
+    restart.setScale(0)
 
     // final score label
     let winnerScoreLabel = SKLabelNode(fontNamed:"Chalkduster")
@@ -38,16 +37,14 @@ extension GameScene {
     winnerScoreLabel.horizontalAlignmentMode = .center
     winnerScoreLabel.verticalAlignmentMode = .center
 
-    restartBtn.addChild(winnerScoreLabel)
-    self.addChild(restartBtn)
-    restartBtn.run(SKAction.scale(to: 1.0, duration: 0.3))
-    showReplayButton = true
+    restart.addChild(winnerScoreLabel)
+    
+    return restart
   }
 
   func createCat() -> SKSpriteNode {
-    // size/position
     let cat = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("cat1"))
-    cat.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
+    cat.position = CGPoint(x:frame.midX, y:frame.midY)
     
     // bounce/gravity
     cat.physicsBody = SKPhysicsBody.init(texture: cat.texture!, alphaThreshold: 0.3, size: cat.size)
@@ -59,23 +56,19 @@ extension GameScene {
 
     // collisions/contacts
     cat.physicsBody?.categoryBitMask = CollisionBitMask.catCategory
-    cat.physicsBody?.collisionBitMask = CollisionBitMask.flyingObstacleCategory | CollisionBitMask.groundObstacleCategory | CollisionBitMask.moonCategory
-    cat.physicsBody?.contactTestBitMask = CollisionBitMask.flyingObstacleCategory | CollisionBitMask.groundObstacleCategory | CollisionBitMask.moonCategory
+    cat.physicsBody?.collisionBitMask = CollisionBitMask.obstacleCategory | CollisionBitMask.moonCategory
+    cat.physicsBody?.contactTestBitMask = CollisionBitMask.obstacleCategory | CollisionBitMask.moonCategory
 
     return cat
   }
   
   func createSpaceShip() -> SKSpriteNode {
-    
     let spaceShip = SKSpriteNode(imageNamed: "spaceShip")
     spaceShip.setScale(0.9)
 
-    var iPhoneXNotchOffset: CGFloat = 0
-    if UIScreen.main.nativeBounds.height == 2436 {
-      iPhoneXNotchOffset = 44
-    }
-    
-    spaceShip.position = CGPoint(x:self.frame.midX, y:self.frame.size.height - spaceShip.size.height/2 - iPhoneXNotchOffset)
+    // position spaceShip for iPhone X
+    let iPhoneXNotchOffset: CGFloat = UIScreen.main.nativeBounds.height == 2436 ? 44 : 0
+    spaceShip.position = CGPoint(x:frame.midX, y:frame.size.height - spaceShip.size.height/2 - iPhoneXNotchOffset)
     
     // bounce/gravity
     spaceShip.physicsBody = SKPhysicsBody.init(texture: spaceShip.texture!, alphaThreshold: 0.3, size: spaceShip.size)
@@ -96,7 +89,7 @@ extension GameScene {
     beam.name = "beam"
     beam.setScale(0.1)
     beam.anchorPoint = CGPoint(x: 0.5, y: 1)
-    beam.position = CGPoint(x: 0, y: -spaceShip.size.height/2)
+    beam.position = CGPoint(x: 0, y: -spaceShip.size.height/2+10)
     return beam
   }
 
@@ -104,59 +97,54 @@ extension GameScene {
     star = SKSpriteNode(imageNamed: "star3")
     star.setScale(0.5)
     star.zPosition = -25
-    star.position = CGPoint(x: random(min: 10, max: size.width - 10), y: random(min: frame.midY, max: frame.height))
+    star.position = CGPoint(x: Helper.random(min: 10, max: size.width - 10), y: Helper.random(min: frame.midY, max: frame.height))
     return star
   }
   
-  func createGroundObsticle() -> SKSpriteNode {
-
-    groundObsticle = SKSpriteNode(imageNamed: "pizza")
-    groundObsticle.setScale(0.5)
+  func createObsticle1() -> SKSpriteNode {
+    obsticle1 = SKSpriteNode(imageNamed: "pizza")
+    obsticle1.setScale(0.5)
 
     // randomize y position
-    randomY1 =  random(min: groundObsticle.size.height + 200, max: frame.height - groundObsticle.size.height - spaceShip.size.height)
-    groundObsticle.position = CGPoint(x: size.width - 10, y: randomY1)
+    randomY1 =  Helper.random(min: obsticle1.size.height + 200, max: frame.height - obsticle1.size.height - spaceShip.size.height)
+    obsticle1.position = CGPoint(x: size.width - 10, y: randomY1)
 
-    groundObsticle.physicsBody = SKPhysicsBody.init(texture: groundObsticle.texture!, alphaThreshold: 0.3, size: groundObsticle.size)
+    obsticle1.physicsBody = SKPhysicsBody.init(texture: obsticle1.texture!, alphaThreshold: 0.3, size: obsticle1.size)
+    obsticle1.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    obsticle1.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
-    groundObsticle.physicsBody?.categoryBitMask = CollisionBitMask.groundObstacleCategory
-    groundObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-
-    return groundObsticle
+    return obsticle1
   }
 
-  func createFlyingObsticle() -> SKSpriteNode {
-
-    flyingObsticle = SKSpriteNode(imageNamed: "cup")
-    flyingObsticle.setScale(0.5)
+  func createObsticle2() -> SKSpriteNode {
+    obsticle2 = SKSpriteNode(imageNamed: "cup")
+    obsticle2.setScale(0.5)
 
     // randomize y position
-    randomY2 =  random(min: flyingObsticle.size.height + 200, max: frame.height - flyingObsticle.size.height - spaceShip.size.height)
-    flyingObsticle.position = CGPoint(x: size.width - 10, y: randomY2)
+    randomY2 =  Helper.random(min: obsticle2.size.height + 200, max: frame.height - obsticle2.size.height - spaceShip.size.height)
+    obsticle2.position = CGPoint(x: size.width - 10, y: randomY2)
 
-    flyingObsticle.physicsBody = SKPhysicsBody.init(texture: flyingObsticle.texture!, alphaThreshold: 0.3, size: flyingObsticle.size)
+    obsticle2.physicsBody = SKPhysicsBody.init(texture: obsticle2.texture!, alphaThreshold: 0.3, size: obsticle2.size)
+    obsticle2.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    obsticle2.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
-    flyingObsticle.physicsBody?.categoryBitMask = CollisionBitMask.flyingObstacleCategory
-    flyingObsticle.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-
-    return flyingObsticle
+    return obsticle2
   }
 
-  func createFlyingObsticle2() -> SKSpriteNode {
+  func createObsticle3() -> SKSpriteNode {
 
-    flyingObsticle2 = SKSpriteNode(imageNamed: "popcan")
-    flyingObsticle2.setScale(0.5)
+    obsticle3 = SKSpriteNode(imageNamed: "popcan")
+    obsticle3.setScale(0.5)
 
     // randomize y position
-    randomY3 =  random(min: flyingObsticle2.size.height + 50, max: frame.height - flyingObsticle2.size.height - spaceShip.size.height)
-    flyingObsticle2.position = CGPoint(x: size.width - 10, y: randomY3)
+    randomY3 =  Helper.random(min: obsticle3.size.height + 50, max: frame.height - obsticle3.size.height - spaceShip.size.height)
+    obsticle3.position = CGPoint(x: size.width - 10, y: randomY3)
 
-    flyingObsticle2.physicsBody = SKPhysicsBody.init(texture: flyingObsticle2.texture!, alphaThreshold: 0.3, size: flyingObsticle2.size)
+    obsticle3.physicsBody = SKPhysicsBody.init(texture: obsticle3.texture!, alphaThreshold: 0.3, size: obsticle3.size)
+    obsticle3.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
+    obsticle3.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
 
-    flyingObsticle2.physicsBody?.categoryBitMask = CollisionBitMask.flyingObstacleCategory2
-    flyingObsticle2.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-
-    return flyingObsticle2
+    return obsticle3
   }
 
   func createScoreLabel() -> SKLabelNode {
@@ -166,7 +154,7 @@ extension GameScene {
     scoreLbl.fontSize = 44
     scoreLbl.fontColor = UIColor(hex: "1D0E48")
     scoreLbl.fontName = "Chalkduster"
-    scoreLbl.position = CGPoint(x: (self.frame.width - scoreLbl.frame.size.width - 20) , y: (self.frame.height - scoreLbl.frame.size.height - 40))
+    scoreLbl.position = CGPoint(x: (frame.width - scoreLbl.frame.size.width - 20) , y: (frame.height - scoreLbl.frame.size.height - 40))
 
     // background
     let scoreBackground = SKSpriteNode(imageNamed: "points")
@@ -179,25 +167,35 @@ extension GameScene {
     return scoreLbl
   }
 
-}
-
-extension UIColor {
-  convenience init(hex: String) {
-    let scanner = Scanner(string: hex)
-    scanner.scanLocation = 0
-
-    var rgbValue: UInt64 = 0
-
-    scanner.scanHexInt64(&rgbValue)
-
-    let r = (rgbValue & 0xff0000) >> 16
-    let g = (rgbValue & 0xff00) >> 8
-    let b = rgbValue & 0xff
-
-    self.init(
-      red: CGFloat(r) / 0xff,
-      green: CGFloat(g) / 0xff,
-      blue: CGFloat(b) / 0xff, alpha: 1
-    )
+  func createSky(_ imageNumber: Int) -> SKSpriteNode {
+    let sky = SKSpriteNode(imageNamed: "background")
+    
+    sky.setScale(0.7)
+    sky.zPosition = -30
+    sky.anchorPoint = CGPoint.zero
+    sky.position = CGPoint(x: (sky.size.width * CGFloat(imageNumber)) - CGFloat(1 * imageNumber), y: 0)
+    
+    return sky
   }
+  
+  func createMountain(_ imageNumber: Int) -> SKSpriteNode {
+    let mountain = SKSpriteNode(imageNamed: "mountain")
+    
+    mountain.setScale(0.85)
+    mountain.zPosition = -20
+    mountain.position = CGPoint(x: mountain.size.width/2 + mountain.size.width * CGFloat(imageNumber) , y: mountain.size.height / 2)
+    
+    return mountain
+  }
+  
+  func createGround(_ imageNumber: Int) -> SKSpriteNode {
+    let ground = SKSpriteNode(imageNamed: "ground")
+    
+    ground.setScale(0.7)
+    ground.zPosition = -10
+    ground.position = CGPoint(x: ground.size.width/2 + ground.size.width * CGFloat(imageNumber) , y: ground.size.height / 2)
+    
+    return ground
+  }
+
 }
