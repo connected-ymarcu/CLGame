@@ -105,9 +105,9 @@ extension GameScene {
 
   func createStar() -> SKSpriteNode {
     let star = SKSpriteNode(imageNamed: "star3")
-    star.setScale(0.5)
+    star.setScale(0.2)
     star.zPosition = -25
-    star.position = CGPoint(x: Helper.random(min: 10, max: size.width - 10), y: Helper.random(min: frame.midY, max: frame.height))
+    star.position = CGPoint(x: Helper.random(min: 10, max: size.width - 10), y: Helper.random(min: frame.midY/2, max: frame.height))
     return star
   }
   
@@ -189,21 +189,49 @@ extension GameScene {
   }
   
   func createMountain(_ imageNumber: Int) -> SKSpriteNode {
-    let mountainNode = SKSpriteNode(imageNamed: "mountain")
+    let mountainNode = SKSpriteNode(imageNamed: "mountain1")
     
-    mountainNode.setScale(0.85)
+    mountainNode.setScale(0.7)
+
     mountainNode.zPosition = -20
-    mountainNode.position = CGPoint(x: mountainNode.size.width/2 + mountainNode.size.width * CGFloat(imageNumber) , y: mountainNode.size.height / 2)
+    mountainNode.anchorPoint = CGPoint.zero
+    mountainNode.position = CGPoint(x: mountainNode.size.width * CGFloat(imageNumber) , y: 0)
     
+    return mountainNode
+  }
+
+  func createMountain2(_ imageNumber: Int) -> SKSpriteNode {
+    let mountainNode = SKSpriteNode(imageNamed: "mountain2")
+
+    mountainNode.setScale(0.7)
+
+    mountainNode.zPosition = -18
+    mountainNode.anchorPoint = CGPoint.zero
+    mountainNode.position = CGPoint(x: mountainNode.size.width * CGFloat(imageNumber) , y: 0)
+
+    return mountainNode
+  }
+
+  func createMountain3(_ imageNumber: Int) -> SKSpriteNode {
+    let mountainNode = SKSpriteNode(imageNamed: "mountain3")
+
+    mountainNode.setScale(0.7)
+
+    mountainNode.zPosition = -16
+    mountainNode.anchorPoint = CGPoint.zero
+    mountainNode.position = CGPoint(x: mountainNode.size.width * CGFloat(imageNumber) , y: 0)
+
     return mountainNode
   }
   
   func createGround(_ imageNumber: Int) -> SKSpriteNode {
     let groundNode = SKSpriteNode(imageNamed: "ground")
-    
+
     groundNode.setScale(0.7)
+
     groundNode.zPosition = -10
-    groundNode.position = CGPoint(x: groundNode.size.width/2 + groundNode.size.width * CGFloat(imageNumber) , y: groundNode.size.height / 2)
+    groundNode.anchorPoint = CGPoint.zero
+    groundNode.position = CGPoint(x: groundNode.size.width * CGFloat(imageNumber) , y: 0)
     
     return groundNode
   }

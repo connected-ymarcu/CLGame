@@ -67,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       run(SKAction.repeatForever(
         SKAction.sequence([
           SKAction.run(starAction),
-          SKAction.wait(forDuration: TimeInterval(1))
+          SKAction.wait(forDuration: TimeInterval(0.4))
           ])
       ))
     }
@@ -90,6 +90,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       {
         setupSky(imageNumber: i)
         setupMountain(imageNumber: i)
+        setupMountain2(imageNumber: i)
+        setupMountain3(imageNumber: i)
         setupGround(imageNumber: i)
       }
     }
@@ -108,7 +110,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let mountain = createMountain(imageNumber)
       addChild(mountain)
 
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 20)
+      mountain.run(moveForever)
+    }
+
+    func setupMountain2(imageNumber: Int) {
+      let mountain = createMountain2(imageNumber)
+      addChild(mountain)
+
       let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 15)
+      mountain.run(moveForever)
+    }
+
+    func setupMountain3(imageNumber: Int) {
+      let mountain = createMountain3(imageNumber)
+      addChild(mountain)
+
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 13)
       mountain.run(moveForever)
     }
 
@@ -116,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let ground = createGround(imageNumber)
       addChild(ground)
       
-      let moveForever = SKAction.setupInfiniteScroll(imageWidth: ground.size.width, movingDuration: 7)
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: ground.size.width, movingDuration: 11)
       ground.run(moveForever)
     }
 
@@ -335,7 +353,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat ) {
         if currentlyPlaying() {
           print("DEATH")
-          endGame()
+//          endGame()
         }
       } else {
         cat.removeAllActions()
