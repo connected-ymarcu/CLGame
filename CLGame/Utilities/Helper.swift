@@ -14,7 +14,8 @@ class Helper {
     return random() * (max - min) + min
   }
   
-  static func random() -> CGFloat{
+  static func random() -> CGFloat {
     return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
   }
 }
+

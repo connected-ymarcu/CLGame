@@ -31,7 +31,7 @@ extension GameScene {
     let savedhighestScore = UserDefaults.standard.integer(forKey: "highestScore")
     
     // RIGHT - scores
-    let winnerScoreLabel = SKLabelNode(fontNamed:"fredoka one")
+    let winnerScoreLabel = SKLabelNode(fontNamed:"FredokaOne-Regular")
     winnerScoreLabel.text = "Score \(score)\nBest \(savedhighestScore)"
     winnerScoreLabel.numberOfLines = 0
     winnerScoreLabel.preferredMaxLayoutWidth = 1000
@@ -162,10 +162,10 @@ extension GameScene {
     scoreNode.zPosition = 5
     scoreNode.fontSize = 28
     scoreNode.fontColor = UIColor(hex: "1E0F4B")
-    scoreNode.fontName = "fredoka one"
+    scoreNode.fontName = "FredokaOne-Regular"
     scoreNode.verticalAlignmentMode = .center
     scoreNode.horizontalAlignmentMode = .center
-    scoreNode.position = CGPoint(x: (frame.width - scoreNode.frame.size.width - 20) , y: (frame.height - scoreNode.frame.size.height - 40))
+    scoreNode.position = CGPoint(x: (frame.width - scoreNode.frame.size.width - 20) , y: (frame.height - scoreNode.frame.size.height - 20))
     
     // background
     let scoreBackground = SKSpriteNode(imageNamed: "background-points")
