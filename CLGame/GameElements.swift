@@ -110,51 +110,6 @@ extension GameScene {
     star.position = CGPoint(x: Helper.random(min: 10, max: size.width - 10), y: Helper.random(min: frame.midY/2, max: frame.height))
     return star
   }
-  
-  func createObsticle1() -> SKSpriteNode {
-    let obsticleNode = SKSpriteNode(imageNamed: "pizza")
-    obsticleNode.setScale(0.5)
-
-    // randomize y position
-    randomY1 =  Helper.random(min: obsticleNode.size.height + 200, max: frame.height - obsticleNode.size.height - spaceShip.size.height)
-    obsticleNode.position = CGPoint(x: size.width - 10, y: randomY1)
-
-    obsticleNode.physicsBody = SKPhysicsBody.init(texture: obsticleNode.texture!, alphaThreshold: 0.3, size: obsticleNode.size)
-    obsticleNode.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
-    obsticleNode.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-
-    return obsticleNode
-  }
-
-  func createObsticle2() -> SKSpriteNode {
-    let obsticleNode = SKSpriteNode(imageNamed: "cup")
-    obsticleNode.setScale(0.5)
-
-    // randomize y position
-    randomY2 =  Helper.random(min: obsticleNode.size.height + 200, max: frame.height - obsticleNode.size.height - spaceShip.size.height)
-    obsticleNode.position = CGPoint(x: size.width - 10, y: randomY2)
-
-    obsticleNode.physicsBody = SKPhysicsBody.init(texture: obsticleNode.texture!, alphaThreshold: 0.3, size: obsticleNode.size)
-    obsticleNode.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
-    obsticleNode.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-
-    return obsticleNode
-  }
-
-  func createObsticle3() -> SKSpriteNode {
-    let obsticleNode = SKSpriteNode(imageNamed: "popcan")
-    obsticleNode.setScale(0.5)
-
-    // randomize y position
-    randomY3 =  Helper.random(min: obsticleNode.size.height + 50, max: frame.height - obsticleNode.size.height - spaceShip.size.height)
-    obsticleNode.position = CGPoint(x: size.width - 10, y: randomY3)
-
-    obsticleNode.physicsBody = SKPhysicsBody.init(texture: obsticleNode.texture!, alphaThreshold: 0.3, size: obsticleNode.size)
-    obsticleNode.physicsBody?.categoryBitMask = CollisionBitMask.obstacleCategory
-    obsticleNode.physicsBody?.collisionBitMask = CollisionBitMask.catCategory
-
-    return obsticleNode
-  }
 
   func createScoreLabel() -> SKLabelNode {
     let scoreNode = SKLabelNode()

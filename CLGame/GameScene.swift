@@ -37,13 +37,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     func setupNodes(){
+
       // Scene
       createScene()
-      
+
       // SpaceShip
       spaceShip = createSpaceShip()
       addChild(spaceShip)
-      
+
       // Cat
       cat = createCat()
       let catAtlas = SKTextureAtlas(named:"player")
@@ -61,8 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       scoreAction()
       
       // Obsticle
-      spawnObsticle1()
-      
+      spawnObsticle(name: "pizza", scale: 0.5, speedLimit: 4, count: 4)
+
       // Stars
       run(SKAction.repeatForever(
         SKAction.sequence([
@@ -102,7 +103,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let sky = createSky(imageNumber)
       addChild(sky)
   
-      let moveForever = SKAction.setupInfiniteScroll(imageWidth: sky.size.width, movingDuration: 30)
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: sky.size.width, movingDuration: 11)
       sky.run(moveForever)
     }
   
@@ -110,7 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let mountain = createMountain(imageNumber)
       addChild(mountain)
 
-      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 20)
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 8)
       mountain.run(moveForever)
     }
 
@@ -118,7 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let mountain = createMountain2(imageNumber)
       addChild(mountain)
 
-      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 15)
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 7)
       mountain.run(moveForever)
     }
 
@@ -126,7 +127,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let mountain = createMountain3(imageNumber)
       addChild(mountain)
 
-      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 13)
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: mountain.size.width, movingDuration: 6)
       mountain.run(moveForever)
     }
 
@@ -134,76 +135,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       let ground = createGround(imageNumber)
       addChild(ground)
       
-      let moveForever = SKAction.setupInfiniteScroll(imageWidth: ground.size.width, movingDuration: 11)
+      let moveForever = SKAction.setupInfiniteScroll(imageWidth: ground.size.width, movingDuration: 4)
       ground.run(moveForever)
     }
 
     // MARK - Spawn Obsticles
-  
-    // obsticle 1
-    var numObsticle1: Double = 3 // the lower, the more obsticles show up
-    var speedOfObsticle1: Double  = 4  // the lower, the faster obsticles move
-    // obsticle 2
-    var numOfObsticle2: Double  = 2
-    var speedOfObsticle2: Double = 2
-    // obsticle 3
-    var numOfObsticle3: Double = 1
-    var speedOfObsticle3: Double  = 1
-  
-    func spawnObsticle1 () {
+
+    func spawnObsticle (name: String, scale: CGFloat, speedLimit: Double, count: Double) {
       run(SKAction.repeatForever(
         SKAction.sequence([
-          SKAction.run(obsticleAction1),
-          SKAction.wait(forDuration: TimeInterval(numObsticle1))
+          SKAction.run {[weak self] in self?.obsticleAction(name: name, scale: scale, speedLimit: speedLimit)},
+          SKAction.wait(forDuration: TimeInterval(count))
           ])
       ))
     }
 
-    func spawnObsticle2 () {
-      run(SKAction.repeatForever(
-        SKAction.sequence([
-          SKAction.run(obsticleAction2),
-          SKAction.wait(forDuration: TimeInterval(numOfObsticle2))
-          ])
-      ))
-    }
+    func obsticleAction(name: String, scale: CGFloat, speedLimit: Double) {
+      let obsticle: Obstacle! = Obstacle(imageName: name, scale: scale, xCoord: frame.width - 10, heightOffset: frame.height - spaceShip.size.height, speedLimit: speedLimit)
 
-    func spawnObsticle3 () {
-      run(SKAction.repeatForever(
-        SKAction.sequence([
-          SKAction.run(obsticleAction3),
-          SKAction.wait(forDuration: TimeInterval(numOfObsticle3))
-          ])
-      ))
-    }
+      addChild(obsticle)
 
-    func obsticleAction1() {
-      let obsticle1 = createObsticle1()
-      addChild(obsticle1)
-
-      let actionMove = SKAction.move(to: CGPoint(x: -obsticle1.size.width/2, y: randomY1), duration: TimeInterval(speedOfObsticle1))
+      let actionMove = SKAction.move(to: CGPoint(x: -obsticle.size.width/2, y: obsticle.yCoord), duration: TimeInterval(speedLimit))
       let actionRemove = SKAction.removeFromParent()
-      obsticle1.run(SKAction.sequence([actionMove, actionRemove]))
+      obsticle.run(SKAction.sequence([actionMove, actionRemove]))
     }
 
-    func obsticleAction2() {
-      let obsticle2 = createObsticle2()
-      addChild(obsticle2)
-
-      let actionMove = SKAction.move(to: CGPoint(x: -obsticle2.size.width/2, y: randomY2), duration: TimeInterval(speedOfObsticle2))
-      let actionRemove = SKAction.removeFromParent()
-      obsticle2.run(SKAction.sequence([actionMove, actionRemove]))
-    }
-
-    func obsticleAction3() {
-      let obsticle3 = createObsticle3()
-      addChild(obsticle3)
-
-      let actionMove = SKAction.move(to: CGPoint(x: -obsticle3.size.width/2, y: randomY3), duration: TimeInterval(speedOfObsticle3))
-      let actionRemove = SKAction.removeFromParent()
-      obsticle3.run(SKAction.sequence([actionMove, actionRemove]))
-    }
-  
     // MARK - other nodes
   
     func starAction() {
@@ -233,7 +189,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       startedGame = true
       lostGame = false
       score = 0
-      speedOfObsticle1 = 3
       catTextureArray.removeAll()
       removeAllChildren()
       
@@ -245,20 +200,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       scoreLabel.text = "\(score)"
 
       if (score == levelUpScore*2) {
-        spawnObsticle2()
+        spawnObsticle(name: "coffeecup", scale: 0.5, speedLimit: 3.5, count: 3.7)
       } else if (score == levelUpScore*4){
-        spawnObsticle3()
+        spawnObsticle(name: "donut", scale: 0.5, speedLimit: 5, count: 4)
+      } else if (score == levelUpScore*6){
+        spawnObsticle(name: "cup", scale: 0.5, speedLimit: 3, count: 3.5)
+      } else if (score == levelUpScore*8){
+        spawnObsticle(name: "watermelon", scale: 0.5, speedLimit: 2, count: 3)
+      } else if (score == levelUpScore*10){
+        spawnObsticle(name: "popcan", scale: 0.5, speedLimit: 3, count: 2.7)
+      } else if (score == levelUpScore*12){
+        spawnObsticle(name: "frenchfry", scale: 0.5, speedLimit: 4, count: 2.5)
       }
 
       // every levelUpScoreTH score flip gravity
       if (score % levelUpScore == 0) {
         isFlipped = !isFlipped
         if (!isFlipped) {
-          speedOfObsticle1 *= 0.9
-          if speedOfObsticle1 == 0 {
-            print("YOU BIT THE GAME")
-            endGame()
-          }
           // fade out beam
           beam.run(SKAction.sequence([SKAction.scale(to: 0.01, duration: 1), SKAction.fadeOut(withDuration: 0.5)]), completion: {
             self.spaceShip.removeAllChildren()
