@@ -19,6 +19,7 @@ var randomY2: CGFloat = 185
 var randomY3: CGFloat = 185
 
 var showReplayButton = Bool (false)
+var showPlayButton = Bool (false)
 
 extension GameScene {
 

@@ -17,7 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var startedGame = false
     var lostGame = false
     var isFlipped = false
-    let levelUpScore = 2
+    let levelUpScore = 5
 
     // score
     var score = Int(0)
@@ -190,6 +190,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       // reset states
       isFlipped = false
       showReplayButton = false
+      showPlayButton = false
       startedGame = true
       lostGame = false
       score = 0
@@ -270,6 +271,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       playButton = createPlayButton()
       addChild(playButton)
       playButton.run(SKAction.scale(to: 1.0, duration: 0.3))
+      showPlayButton = true
 
       setupNodes(runActions: false)
     }
@@ -298,9 +300,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
           }
         } else {
-          for touch in touches {
-            if playButton.contains(touch.location(in: self)) {
-              startGame()
+          if (showPlayButton) {
+            for touch in touches {
+              if playButton.contains(touch.location(in: self)) {
+                startGame()
+              }
             }
           }
         }
