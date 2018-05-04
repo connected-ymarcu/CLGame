@@ -23,33 +23,54 @@ var showReplayButton = Bool (false)
 extension GameScene {
 
   func createRestartButton() -> SKSpriteNode {
-    let restart = SKSpriteNode(imageNamed: "replay")
-    restart.size = CGSize(width:frame.size.width - 60, height:170)
-    restart.position = CGPoint(x: frame.midX, y: frame.midY)
-    restart.zPosition = 6
+    let playModal = SKSpriteNode(imageNamed: "replay")
+    playModal.size = CGSize(width: playModal.size.width*0.9, height: playModal.size.height*0.9)
+    playModal.position = CGPoint(x: frame.midX, y: frame.midY)
+    playModal.zPosition = 6
 
     let savedhighestScore = UserDefaults.standard.integer(forKey: "highestScore")
+    let scoreLabel = SKLabelNode(fontNamed:"FredokaOne-Regular")
+    scoreLabel.text = "Score \(score)\nBest \(savedhighestScore)"
+    scoreLabel.numberOfLines = 0
+    scoreLabel.preferredMaxLayoutWidth = 1000
+    scoreLabel.fontColor = UIColor(hex: "1E0F4B")
+    scoreLabel.fontSize = 30
+    scoreLabel.horizontalAlignmentMode = .center
+    scoreLabel.verticalAlignmentMode = .center
+    scoreLabel.position = CGPoint(x: 0, y: 0)
+
+    let replayButton = SKSpriteNode(imageNamed: "replay-button")
+    replayButton.position = CGPoint(x: 0, y: -playModal.size.height/4)
     
-    // RIGHT - scores
-    let winnerScoreLabel = SKLabelNode(fontNamed:"FredokaOne-Regular")
-    winnerScoreLabel.text = "Score \(score)\nBest \(savedhighestScore)"
-    winnerScoreLabel.numberOfLines = 0
-    winnerScoreLabel.preferredMaxLayoutWidth = 1000
-    winnerScoreLabel.fontColor = UIColor(hex: "1E0F4B")
-    winnerScoreLabel.fontSize = 28
-    winnerScoreLabel.horizontalAlignmentMode = .center
-    winnerScoreLabel.verticalAlignmentMode = .center
-    winnerScoreLabel.position = CGPoint(x: restart.size.width/4, y: -restart.size.height/4)
+    playModal.addChild(scoreLabel)
+    playModal.addChild(replayButton)
     
-    // LEFT - reply button
-    let replayButton = SKSpriteNode(imageNamed: "replayButton")
-    replayButton.setScale(0.2)
-    replayButton.position = CGPoint(x: -restart.size.width/4, y: -restart.size.height/4)
-    
-    restart.addChild(winnerScoreLabel)
-    restart.addChild(replayButton)
-    
-    return restart
+    return playModal
+  }
+
+  func createPlayButton() -> SKSpriteNode {
+    let playModal = SKSpriteNode(imageNamed: "replay")
+    playModal.size = CGSize(width: playModal.size.width*0.9, height: playModal.size.height*0.9)
+    playModal.position = CGPoint(x: frame.midX, y: frame.midY)
+    playModal.zPosition = 6
+
+    let introLabel = SKLabelNode(fontNamed:"FredokaOne-Regular")
+    introLabel.text = "Astro Kitty needs to\nsurvive on the moon.\nTap top play!"
+    introLabel.numberOfLines = 0
+    introLabel.preferredMaxLayoutWidth = 1000
+    introLabel.fontColor = UIColor(hex: "1E0F4B")
+    introLabel.fontSize = 22
+    introLabel.horizontalAlignmentMode = .center
+    introLabel.verticalAlignmentMode = .center
+    introLabel.position = CGPoint(x: 0, y: 0)
+
+    let playButton = SKSpriteNode(imageNamed: "play-button")
+    playButton.position = CGPoint(x: 0, y: -playModal.size.height/4)
+
+    playModal.addChild(introLabel)
+    playModal.addChild(playButton)
+
+    return playModal
   }
 
   func createCat() -> SKSpriteNode {

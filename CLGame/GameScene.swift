@@ -13,6 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     // game loop
     private var restartButton = SKSpriteNode()
+    private var playButton = SKSpriteNode()
     var startedGame = false
     var lostGame = false
     var isFlipped = false
@@ -36,7 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       return startedGame && !lostGame
     }
 
-    func setupNodes(){
+    func setupNodes(runActions: Bool){
 
       // Scene
       createScene()
@@ -55,22 +56,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       addChild(cat)
       let animateCat = SKAction.animate(with: catTextureArray, timePerFrame: 0.1)
       repeatActionCat = SKAction.repeatForever(animateCat)
-      
+
       // Score
       scoreLabel = createScoreLabel()
       addChild(scoreLabel)
-      scoreAction()
-      
-      // Obsticle
-      spawnObsticle(name: "pizza", scale: 0.5, speedLimit: 4, count: 4)
 
-      // Stars
-      run(SKAction.repeatForever(
-        SKAction.sequence([
-          SKAction.run(starAction),
-          SKAction.wait(forDuration: TimeInterval(0.4))
-          ])
-      ))
+      if (runActions) {
+        scoreAction()
+
+        // Obsticle
+        spawnObsticle(name: "pizza", scale: 0.5, speedLimit: 4, count: 4)
+
+        // Stars
+        run(SKAction.repeatForever(
+          SKAction.sequence([
+            SKAction.run(starAction),
+            SKAction.wait(forDuration: TimeInterval(0.4))
+            ])
+        ))
+      }
     }
   
     func createScene(){
@@ -192,7 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       catTextureArray.removeAll()
       removeAllChildren()
       
-      setupNodes()
+      setupNodes(runActions: true)
     }
   
     func levelUpGame() {
@@ -262,7 +266,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     // MARK - override functions
   
     override func didMove(to view: SKView) {
-      startGame()
+
+      playButton = createPlayButton()
+      addChild(playButton)
+      playButton.run(SKAction.scale(to: 1.0, duration: 0.3))
+
+      setupNodes(runActions: false)
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -285,6 +294,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if (showReplayButton) {
           for touch in touches {
             if restartButton.contains(touch.location(in: self)){
+              startGame()
+            }
+          }
+        } else {
+          for touch in touches {
+            if playButton.contains(touch.location(in: self)) {
               startGame()
             }
           }
@@ -311,7 +326,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       if (catTouchesObstacle || obstacleTouchesCat ) {
         if currentlyPlaying() {
           print("DEATH")
-//          endGame()
+          endGame()
         }
       } else {
         cat.removeAllActions()
