@@ -17,7 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var startedGame = false
     var lostGame = false
     var isFlipped = false
-    let levelUpScore = 5
+    let levelUpScore = 2
 
     // score
     var score = Int(0)
@@ -236,6 +236,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
   
     func endGame() {
+      // spawn garbage
+      spawnObsticle(name: "pizza", scale: 0.5, speedLimit: 2, count: 1)
+      spawnObsticle(name: "coffeecup", scale: 0.5, speedLimit: 3.5, count: 0.9)
+      spawnObsticle(name: "donut", scale: 0.5, speedLimit: 3.3, count: 1.1)
+      spawnObsticle(name: "cup", scale: 0.5, speedLimit: 3.8, count: 0.8)
+      spawnObsticle(name: "watermelon", scale: 0.5, speedLimit: 2.4, count: 0.86)
+      spawnObsticle(name: "popcan", scale: 0.5, speedLimit: 3.2, count: 0.92)
+      spawnObsticle(name: "frenchfry", scale: 0.5, speedLimit: 4, count: 0.7)
+
       // death sound
       run(SKAction.playSoundFileNamed("OhNo1.mp3", waitForCompletion: true))
       

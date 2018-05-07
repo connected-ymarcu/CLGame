@@ -20,8 +20,9 @@ class Obstacle: SKSpriteNode {
     self.yCoord = 0
     self.speedLimit = speedLimit
     super.init(texture: SKTexture(imageNamed: self.imageName), color: UIColor.red, size: SKTexture(imageNamed: self.imageName).size())
-
-    self.setScale(scale)
+    if (scale != 0) {
+      self.setScale(scale)
+    }
     self.yCoord = Helper.random(min: self.size.height + 200, max: heightOffset - self.size.height)
     self.position = CGPoint(x: xCoord, y: yCoord)
     self.physicsBody = SKPhysicsBody.init(texture: self.texture!, alphaThreshold: 0.3, size: self.size)

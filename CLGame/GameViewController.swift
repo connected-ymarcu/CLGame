@@ -19,7 +19,7 @@ class GameViewController: UIViewController {
         let skView = view as! SKView
         scene.scaleMode = .resizeFill
       
-        setupDebugingProperties(skView)
+        //setupDebugingProperties(skView)
       
         skView.preferredFramesPerSecond = 55
         skView.presentScene(scene)

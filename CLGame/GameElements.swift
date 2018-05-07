@@ -56,7 +56,7 @@ extension GameScene {
     playModal.zPosition = 6
 
     let introLabel = SKLabelNode(fontNamed:"FredokaOne-Regular")
-    introLabel.text = "Astro Kitty needs to\nsurvive on the moon.\nTap top play!"
+    introLabel.text = "Astro Kitty needs to\nsurvive on the moon.\nTap to play!"
     introLabel.numberOfLines = 0
     introLabel.preferredMaxLayoutWidth = 1000
     introLabel.fontColor = UIColor(hex: "1E0F4B")
