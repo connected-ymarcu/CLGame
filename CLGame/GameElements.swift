@@ -96,7 +96,6 @@ extension GameScene {
   
   func createSpaceShip() -> SKSpriteNode {
     let spaceShip = SKSpriteNode(imageNamed: "spaceship")
-    spaceShip.setScale(0.9)
 
     // position spaceShip for iPhone X
     let iPhoneXNotchOffset: CGFloat = UIScreen.main.nativeBounds.height == 2436 ? 44 : 0
@@ -119,7 +118,6 @@ extension GameScene {
   func createBeam() -> SKSpriteNode {
     let beam = SKSpriteNode(imageNamed: "beam")
     beam.name = "beam"
-    beam.setScale(0.1)
     beam.anchorPoint = CGPoint(x: 0.5, y: 1)
     beam.position = CGPoint(x: 0, y: -spaceShip.size.height/2+10)
     return beam
@@ -127,7 +125,6 @@ extension GameScene {
 
   func createStar() -> SKSpriteNode {
     let star = SKSpriteNode(imageNamed: "star3")
-    star.setScale(0.2)
     star.zPosition = -25
     star.position = CGPoint(x: Helper.random(min: 10, max: size.width - 10), y: Helper.random(min: frame.midY/2, max: frame.height))
     return star
@@ -146,7 +143,6 @@ extension GameScene {
     
     // background
     let scoreBackground = SKSpriteNode(imageNamed: "background-points")
-    scoreBackground.setScale(0.7)
     scoreBackground.zPosition = -1
     
     scoreNode.addChild(scoreBackground)
@@ -156,8 +152,7 @@ extension GameScene {
 
   func createSky(_ imageNumber: Int) -> SKSpriteNode {
     let skyNode = SKSpriteNode(imageNamed: "background")
-    
-    skyNode.setScale(0.7)
+
     skyNode.zPosition = -30
     skyNode.anchorPoint = CGPoint.zero
     skyNode.position = CGPoint(x: (skyNode.size.width * CGFloat(imageNumber)) - CGFloat(1 * imageNumber), y: 0)
@@ -167,8 +162,6 @@ extension GameScene {
   
   func createMountain(_ imageNumber: Int) -> SKSpriteNode {
     let mountainNode = SKSpriteNode(imageNamed: "mountain1")
-    
-    mountainNode.setScale(0.7)
 
     mountainNode.zPosition = -20
     mountainNode.anchorPoint = CGPoint.zero
@@ -180,8 +173,6 @@ extension GameScene {
   func createMountain2(_ imageNumber: Int) -> SKSpriteNode {
     let mountainNode = SKSpriteNode(imageNamed: "mountain2")
 
-    mountainNode.setScale(0.7)
-
     mountainNode.zPosition = -18
     mountainNode.anchorPoint = CGPoint.zero
     mountainNode.position = CGPoint(x: mountainNode.size.width * CGFloat(imageNumber) , y: 0)
@@ -192,8 +183,6 @@ extension GameScene {
   func createMountain3(_ imageNumber: Int) -> SKSpriteNode {
     let mountainNode = SKSpriteNode(imageNamed: "mountain3")
 
-    mountainNode.setScale(0.7)
-
     mountainNode.zPosition = -16
     mountainNode.anchorPoint = CGPoint.zero
     mountainNode.position = CGPoint(x: mountainNode.size.width * CGFloat(imageNumber) , y: 0)
@@ -203,8 +192,6 @@ extension GameScene {
   
   func createGround(_ imageNumber: Int) -> SKSpriteNode {
     let groundNode = SKSpriteNode(imageNamed: "ground")
-
-    groundNode.setScale(0.7)
 
     groundNode.zPosition = -10
     groundNode.anchorPoint = CGPoint.zero

@@ -65,7 +65,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreAction()
 
         // Obsticle
-        spawnObsticle(name: "pizza", scale: 0.5, speedLimit: 4, count: 4)
+        spawnObsticle(name: "pizza", scale: 0, speedLimit: 4, count: 4)
 
         // Stars
         run(SKAction.repeatForever(
@@ -205,17 +205,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
       scoreLabel.text = "\(score)"
 
       if (score == levelUpScore*2) {
-        spawnObsticle(name: "coffeecup", scale: 0.5, speedLimit: 3.5, count: 3.7)
+        spawnObsticle(name: "coffeecup", scale: 0, speedLimit: 3.5, count: 3.7)
       } else if (score == levelUpScore*4){
-        spawnObsticle(name: "donut", scale: 0.5, speedLimit: 5, count: 4)
+        spawnObsticle(name: "donut", scale: 0, speedLimit: 5, count: 4)
       } else if (score == levelUpScore*6){
-        spawnObsticle(name: "cup", scale: 0.5, speedLimit: 3, count: 3.5)
+        spawnObsticle(name: "cup", scale: 0, speedLimit: 3, count: 3.5)
       } else if (score == levelUpScore*8){
-        spawnObsticle(name: "watermelon", scale: 0.5, speedLimit: 2, count: 3)
+        spawnObsticle(name: "watermelon", scale: 0, speedLimit: 2, count: 3)
       } else if (score == levelUpScore*10){
-        spawnObsticle(name: "popcan", scale: 0.5, speedLimit: 3, count: 2.7)
+        spawnObsticle(name: "popcan", scale: 0, speedLimit: 3, count: 2.7)
       } else if (score == levelUpScore*12){
-        spawnObsticle(name: "frenchfry", scale: 0.5, speedLimit: 4, count: 2.5)
+        spawnObsticle(name: "frenchfry", scale: 0, speedLimit: 4, count: 2.5)
       }
 
       // every levelUpScoreTH score flip gravity
@@ -237,13 +237,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
   
     func endGame() {
       // spawn garbage
-      spawnObsticle(name: "pizza", scale: 0.5, speedLimit: 2, count: 1)
-      spawnObsticle(name: "coffeecup", scale: 0.5, speedLimit: 3.5, count: 0.9)
-      spawnObsticle(name: "donut", scale: 0.5, speedLimit: 3.3, count: 1.1)
-      spawnObsticle(name: "cup", scale: 0.5, speedLimit: 3.8, count: 0.8)
-      spawnObsticle(name: "watermelon", scale: 0.5, speedLimit: 2.4, count: 0.86)
-      spawnObsticle(name: "popcan", scale: 0.5, speedLimit: 3.2, count: 0.92)
-      spawnObsticle(name: "frenchfry", scale: 0.5, speedLimit: 4, count: 0.7)
+      spawnObsticle(name: "pizza", scale: 0, speedLimit: 2, count: 1)
+      spawnObsticle(name: "coffeecup", scale: 0, speedLimit: 3.5, count: 0.9)
+      spawnObsticle(name: "donut", scale: 0, speedLimit: 3.3, count: 1.1)
+      spawnObsticle(name: "cup", scale: 0, speedLimit: 3.8, count: 0.8)
+      spawnObsticle(name: "watermelon", scale: 0, speedLimit: 2.4, count: 0.86)
+      spawnObsticle(name: "popcan", scale: 0, speedLimit: 3.2, count: 0.92)
+      spawnObsticle(name: "frenchfry", scale: 0, speedLimit: 4, count: 0.7)
 
       // death sound
       run(SKAction.playSoundFileNamed("OhNo1.mp3", waitForCompletion: true))
